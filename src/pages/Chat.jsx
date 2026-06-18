@@ -352,6 +352,7 @@ const Chat = ({ chatId, user }) => {
   const typingTimeout = useRef(null);
 
   const chatDetails = useChatDetailsQuery({ chatId, skip: !chatId });
+  
 
   const oldMessagesChunk = useGetMessagesQuery({ chatId, page });
 
@@ -474,12 +475,31 @@ const Chat = ({ chatId, user }) => {
     [START_TYPING]: startTypingListener,
     [STOP_TYPING]: stopTypingListener,
   };
+  useEffect(() => {
+  if (oldMessagesChunk.data?.messages?.length === 0) {
+    setOldMessages([]);
+    setMessages([]);
+  }
+}, [oldMessagesChunk.data]);
 
   useSocketEvents(socket, eventHandler);
 
   useErrors(errors);
+  useEffect(() => {
+  if (chatDetails.isError) {
+    navigate("/");
+  }
+}, [chatDetails.isError]);
 
   const allMessages = [...oldMessages, ...messages];
+
+//   const allMessages = [
+//   ...(oldMessagesChunk.data?.messages || []),
+//   ...messages,
+// ];
+
+
+
 
   return chatDetails.isLoading ? (
     <Skeleton />
@@ -564,6 +584,7 @@ const Chat = ({ chatId, user }) => {
       </form>
 
       <FileMenu anchorEl={fileMenuAnchor} chatId={chatId} />
+      
     </Fragment>
   );
 };

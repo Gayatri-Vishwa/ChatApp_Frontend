@@ -168,6 +168,7 @@ import Title from "../shared/Title";
 import ChatList from "../specific/ChatList";
 import Profile from "../specific/Profile";
 import Header from "./Header";
+import toast from "react-hot-toast";
 
 const AppLayout = () => (WrappedComponent) => {
   return (props) => {
@@ -193,10 +194,13 @@ const AppLayout = () => (WrappedComponent) => {
       getOrSaveFromStorage({ key: NEW_MESSAGE_ALERT, value: newMessagesAlert });
     }, [newMessagesAlert]);
 
-    const handleDeleteChat = (e, chatId, groupChat) => {
+    const handleDeleteChat = (element, chatId, groupChat) => {
+        console.log("element",element);
       dispatch(setIsDeleteMenu(true));
       dispatch(setSelectedDeleteChat({ chatId, groupChat }));
-      deleteMenuAnchor.current = e.currentTarget;
+      // deleteMenuAnchor.current = e.currentTarget;
+        deleteMenuAnchor.current = element;
+     
     };
 
     const handleMobileClose = () => dispatch(setIsMobileMenu(false));

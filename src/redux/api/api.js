@@ -185,6 +185,8 @@ const api = createApi({
         credentials: "include",
       }),
       keepUnusedDataFor: 0,
+        providesTags: ["Message"],
+
     }),
 
     sendAttachments: builder.mutation({
@@ -274,6 +276,28 @@ const api = createApi({
       }),
       invalidatesTags: ["Chat"],
     }),
+
+
+    //mine
+//     clearChat: builder.mutation({
+//   query: (chatId) => ({
+//     url: `chat/clear/${chatId}`,
+//     method: "DELETE",
+//     credentials: "include",
+//   }),
+//   invalidatesTags: ["Message"],
+// }),
+
+clearChat: builder.mutation({
+  query: (chatId) => ({
+    url: `chat/clear/${chatId}`,
+    method: "DELETE",
+    credentials: "include",
+  }),
+  invalidatesTags: ["Chat", "Message"],
+  
+}),
+
   }),
 });
 
@@ -296,4 +320,5 @@ export const {
   useAddGroupMembersMutation,
   useDeleteChatMutation,
   useLeaveGroupMutation,
+  useClearChatMutation,
 } = api;

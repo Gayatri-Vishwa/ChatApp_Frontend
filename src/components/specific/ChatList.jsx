@@ -1,6 +1,7 @@
 import { Stack } from "@mui/material";
-import React from "react";
+
 import ChatItem from "../shared/ChatItem";
+import React, { useRef } from "react";
 
 export default function ChatList({
   w = "100%",
@@ -18,6 +19,10 @@ export default function ChatList({
 
 
  {
+
+    const timer = useRef(null);
+
+    
   return (
     <Stack width={w} direction={"column"} overflow={"auto"} height={"100%"}   sx={{
     overflowX: "hidden",   // ✅ IMPORTANT
@@ -46,6 +51,7 @@ export default function ChatList({
             groupChat={groupChat}
             sameSender={chatId === _id}
             handleDeleteChat={handleDeleteChat}
+              timer={timer}     // 👈 ye add karo
             // key={chatId} 
           />
         );
