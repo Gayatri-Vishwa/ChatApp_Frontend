@@ -44,11 +44,8 @@
 //   const [groupNameUpdatedValue, setGroupNameUpdatedValue] = useState("");
 //   const [confirmDeleteDialog, setConfirmDeleteDialog] = useState(false);
 
- 
 // const myGroups = useMyGroupsQuery("");
 //   const isAddMember = false;
-
-
 
 //   const navigate = useNavigate();
 //   const navigateBack = () => {
@@ -81,8 +78,6 @@
 //   const handleMobileClose = () => {
 //     setIsMobileOpen(false);
 //   };
-
-
 
 //   const IconButtons = () => {
 //     return  (
@@ -123,8 +118,6 @@
 //       </>
 //     );
 //   };
-
-
 
 //   const updateGroupName = () => {
 //     setIsEdit(false);
@@ -205,11 +198,7 @@
 //     };
 //   }, [chatId]);
 
-
 //   console.log("data.....",myGroups.data)
-
-
-
 
 //      const groupDetails = useChatDetailsQuery(
 //     { chatId, populate: true },
@@ -221,17 +210,12 @@
 //       error: myGroups.error,
 //     },
 //     {
-      
+
 //       isError: groupDetails.isError,
 //       error: groupDetails.error,
 //     },
 //   ];
 //   useErrors(errors)
-
-
-
-
-
 
 //   return myGroups.isLoading ? <LayoutLoaders /> : (
 //     <Grid
@@ -285,7 +269,7 @@
 //               }}
 //               spacing={"1rem"}
 //               height={"50vh"}
-           
+
 //               // overflow={"auto"}
 //               sx={{
 //                 flex: 1, // 🔥 THIS IS THE MAGIC
@@ -300,7 +284,7 @@
 //                   user={i}
 //                   isAdded
 //                   styling={{
-                   
+
 //                     boxShadow: "0 0 0.5rem rgba(0,0,0,0.2)",
 //                     padding: {
 //                       sm:"1rem 2rem",
@@ -374,23 +358,23 @@
 
 // const GroupListItem = memo(({ group, chatId }) => {
 //   const { name, avatar, _id } = group;
-//   const isSelected=(chatId === _id) 
+//   const isSelected=(chatId === _id)
 //   return (
 //     <Link
 //       to={`?group=${_id}`}
 //       onClick={(e) => {
 //         if (isSelected) e.preventDefault();
 //       }}
-      
+
 //     >
-//       <Stack direction={"row"} spacing={"rem"}   
+//       <Stack direction={"row"} spacing={"rem"}
 //         sx={{
 //           padding: "1rem",
 //           cursor: "pointer",
 //           transition: "0.1s",
 //           backgroundColor: isSelected ? "#5f4c4c2f" : "transparent",
 //           borderRadius: "0.8rem",
-          
+
 //           "&:hover": {
 //            transform: "translateY(-5px)",
 //   transition: "0.3s ease"
@@ -406,12 +390,7 @@
 
 // export default Groups;
 
-
-
-
-
 // ===================================================================================================
-
 
 import {
   Add as AddIcon,
@@ -454,11 +433,11 @@ import {
 import { setIsAddMember } from "../redux/reducers/misc";
 import toast from "react-hot-toast";
 
-const ConfirmDeleteDialog = lazy(() =>
-  import("../components/dialogs/ConfirmDeleteDialog")
+const ConfirmDeleteDialog = lazy(
+  () => import("../components/dialogs/ConfirmDeleteDialog"),
 );
-const AddMemberDialog = lazy(() =>
-  import("../components/dialogs/AddMemberDialog")
+const AddMemberDialog = lazy(
+  () => import("../components/dialogs/AddMemberDialog"),
 );
 
 const Groups = () => {
@@ -472,25 +451,24 @@ const Groups = () => {
 
   const groupDetails = useChatDetailsQuery(
     { chatId, populate: true },
-    { skip: !chatId }
+    { skip: !chatId },
   );
 
   const [updateGroup, isLoadingGroupName] = useAsyncMutation(
-    useRenameGroupMutation
+    useRenameGroupMutation,
   );
 
   const [removeMember, isLoadingRemoveMember] = useAsyncMutation(
-    useRemoveGroupMemberMutation
+    useRemoveGroupMemberMutation,
   );
 
   const [deleteGroup, isLoadingDeleteGroup] = useAsyncMutation(
-    useDeleteChatMutation
+    useDeleteChatMutation,
   );
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [confirmDeleteDialog, setConfirmDeleteDialog] = useState(false);
-  
 
   const [groupName, setGroupName] = useState("");
   const [groupNameUpdatedValue, setGroupNameUpdatedValue] = useState("");
@@ -542,8 +520,7 @@ const Groups = () => {
       chatId,
       name: groupNameUpdatedValue,
     });
-    toast.success("Group name Updated Successfully")
-    
+    toast.success("Group name Updated Successfully");
   };
 
   const openConfirmDeleteHandler = () => {
@@ -573,7 +550,7 @@ const Groups = () => {
       setGroupName(`Group Name ${chatId}`);
       setGroupNameUpdatedValue(`Group Name ${chatId}`);
     }
-    
+
     return () => {
       setGroupName("");
       setGroupNameUpdatedValue("");
@@ -582,14 +559,14 @@ const Groups = () => {
   }, [chatId]);
 
   useEffect(() => {
-  const groupData = groupDetails.data;
+    const groupData = groupDetails.data;
 
-  if (groupData) {
-    setGroupName(groupData.chat.name);
-    setGroupNameUpdatedValue(groupData.chat.name);
-    setMembers(groupData.chat.members || []);
-  }
-}, [groupDetails.data]);
+    if (groupData) {
+      setGroupName(groupData.chat.name);
+      setGroupNameUpdatedValue(groupData.chat.name);
+      setMembers(groupData.chat.members || []);
+    }
+  }, [groupDetails.data]);
 
   const IconBtns = (
     <>
@@ -704,90 +681,91 @@ const Groups = () => {
             xs: "none",
             sm: "block",
           },
+          minWidth: 0,
+          width: "20%",
         }}
         sm={4}
       >
         <GroupsList myGroups={myGroups?.data?.groups} chatId={chatId} />
       </Grid>
 
-
-    
       <Grid
-  item
-  xs={12}
-  sm={8}
-  sx={{
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    position: "relative",
-    padding: "1rem 3rem",
-  }}
->
-  {IconBtns}
-
-  {!chatId ? (
-  <Box
-    sx={{
-      display: "flex",
-      justifyContent: "center",
-      // alignItems: "center",
-      height: "100%",
-      width: "50%",
-    }}
-  >
-    <Typography variant="h5" color="gray">
-      Select a Group
-    </Typography>
-  </Box>
-  ) : (
-    <>
-      {GroupName}
-
-      <Typography
-        margin={"2rem"}
-        alignSelf={"flex-start"}
-        variant="body1"
-      >
-        Members
-      </Typography>
-
-      <Stack
-        maxWidth={"45rem"}
-        width={"100%"}
-        boxSizing={"border-box"}
-        padding={{
-          sm: "1rem",
-          xs: "0",
-          md: "1rem 4rem",
+        item
+        xs={12}
+        sm={8}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          position: "relative",
+          padding: "1rem 3rem",
         }}
-        spacing={"2rem"}
-        height={"50vh"}
-        overflow={"auto"}
       >
-        {isLoadingRemoveMember ? (
-          <CircularProgress />
-        ) : (
-          members.map((i) => (
-            <UserItem
-              key={i._id}
-              user={i}
-              isAdded
-              styling={{
-                boxShadow: "0 0 0.5rem rgba(0,0,0,0.2)",
-                padding: "1rem 2rem",
-                borderRadius: "1rem",
-              }}
-              handler={removeMemberHandler}
-            />
-          ))
-        )}
-      </Stack>
+        {IconBtns}
 
-      {ButtonGroup}
-    </>
-  )}
-</Grid>
+        {!chatId ? (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              paddingLeft: "4rem",
+              alignItems: "center",
+              // height: "100%",
+              // width: "50%",
+            }}
+          >
+            <Typography variant="h5" color="gray">
+              Select a Group
+            </Typography>
+          </Box>
+        ) : (
+          <>
+            {GroupName}
+
+            <Typography
+              margin={"2rem"}
+              alignSelf={"flex-start"}
+              variant="body1"
+            >
+              Members
+            </Typography>
+
+            <Stack
+              maxWidth={"45rem"}
+              width={"100%"}
+              boxSizing={"border-box"}
+              padding={{
+                sm: "1rem",
+                xs: "0",
+                md: "1rem 4rem",
+              }}
+              spacing={"2rem"}
+              height={"50vh"}
+              overflow={"auto"}
+            >
+              {isLoadingRemoveMember ? (
+                <CircularProgress />
+              ) : (
+                members.map((i) => (
+                  <UserItem
+                    key={i._id}
+                    user={i}
+                    isAdded
+                    styling={{
+                      boxShadow: "0 0 0.5rem rgba(0,0,0,0.2)",
+                      padding: "1rem 2rem",
+                      borderRadius: "1rem",
+                    }}
+                    handler={removeMemberHandler}
+                  />
+                ))
+              )}
+            </Stack>
+
+            {ButtonGroup}
+          </>
+        )}
+      </Grid>
 
       {isAddMember && (
         <Suspense fallback={<Backdrop open />}>
@@ -819,13 +797,15 @@ const Groups = () => {
           w={"50vw"}
           myGroups={myGroups?.data?.groups}
           chatId={chatId}
+            creatorMap={groupDetails?.data}
         />
       </Drawer>
     </Grid>
   );
 };
 
-const GroupsList = ({ w = "100%", myGroups = [], chatId }) => (
+const GroupsList = ({ w = "100%", myGroups = [], chatId, creatorMap }) => (
+// const GroupsList = ({ w = "100%", myGroups = [], chatId }) => (
   <Stack
     width={w}
     sx={{
@@ -836,17 +816,18 @@ const GroupsList = ({ w = "100%", myGroups = [], chatId }) => (
   >
     {myGroups.length > 0 ? (
       myGroups.map((group) => (
-        <GroupListItem group={group} chatId={chatId} key={group._id} />
+        <GroupListItem group={group} chatId={chatId} key={group._id}  creatorName={creatorMap?.chat?.creator?.name}/>
       ))
     ) : (
       <Typography textAlign={"center"} padding="1rem">
-        No groups
+        {/* No groups , Create group first */}
+        No groups found. Create a group to get started.
       </Typography>
     )}
   </Stack>
 );
 
-const GroupListItem = memo(({ group, chatId }) => {
+const GroupListItem = memo(({ group, chatId,creatorName }) => {
   const { name, avatar, _id } = group;
 
   return (
@@ -859,9 +840,18 @@ const GroupListItem = memo(({ group, chatId }) => {
       <Stack direction={"row"} spacing={"1rem"} alignItems={"center"}>
         <AvatarCard avatar={avatar} />
         <Typography>{name}</Typography>
+        {/* <Typography variant="body2" color="gray">
+   
+           Created by {creatorName || "Unknown"}
+        </Typography> */}
       </Stack>
     </Link>
   );
 });
 
+
+
+
+
 export default Groups;
+

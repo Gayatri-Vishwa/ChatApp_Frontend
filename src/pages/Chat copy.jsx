@@ -1,3 +1,7 @@
+///orignl not to dlete ==================
+
+
+
 // import React, {
 //   Fragment,
 //   memo,
@@ -61,6 +65,8 @@
 //     oldMessagesChunk.data?.messages,
 //   );
 
+
+ 
 //   const errors = [
 //     { isError: chatDetails.isError, error: chatDetails.error },
 //     { isError: oldMessagesChunk.isError, error: oldMessagesChunk.error },
@@ -96,9 +102,13 @@
 //     // setMessages([]);
 //   }, [chatId]);
 
+
+
+
 //   console.log("oldMessages =", oldMessages);
 // console.log("messages =", messages);
 // console.log("allMessages =", allMessages);
+
 
 // const newMessagesHandler = useCallback((data) => {
 //   console.log("NEW MESSAGE RECEIVED", data);
@@ -121,7 +131,7 @@
 // //       console.log("NEW MESSAGE RECEIVED", data);
 // //       // if (data.chatId !== chatId) return;
 // // if (data.chatId.toString() !== chatId.toString()) return;
-
+      
 // //       setMessages((prev) => {
 // //         console.log("SETMESSAGES CALLED");
 // //         const exists = prev.find((msg) => msg._id === data.message._id);
@@ -135,6 +145,8 @@
 // //     [chatId],
 // //   );
 
+
+
 //   const eventHandler = { [NEW_MESSAGE]: newMessagesHandler };
 
 //   useSocketEvents(socket, eventHandler);
@@ -147,6 +159,8 @@
 //       console.log("CHAT UNMOUNTED");
 //     };
 //   }, []);
+ 
+
 
 //   useEffect(() => {
 //     dispatch(removeNewMessagesAlert(chatId));
@@ -166,6 +180,7 @@
 //     }
 //   }, [ allMessages.length]);
 
+
 // console.log("page =", page);
 // console.log("totalPages =", oldMessagesChunk.data?.totalPages);
 // console.log("oldMessages length =", oldMessages?.length);
@@ -174,7 +189,7 @@
 // useEffect(() => {
 //   setMessages([]);
 //   setPage(1);
-
+  
 //   // setOldMessages([]);
 // }, [chatId]);
 
@@ -281,6 +296,11 @@
 // export default AppLayout()(Chat);
 // // export default memo(AppLayout()(Chat));
 
+
+
+
+
+
 /////////////////////////////copy============================================================================================
 
 import React, {
@@ -291,7 +311,7 @@ import React, {
   useState,
 } from "react";
 import AppLayout from "../components/layout/AppLayout";
-import { IconButton, Skeleton, Stack, Typography } from "@mui/material";
+import { IconButton, Skeleton, Stack } from "@mui/material";
 import { grayColor, orange } from "../components/constants/Color.js";
 import {
   AttachFile as AttachFileIcon,
@@ -309,11 +329,7 @@ import {
   START_TYPING,
   STOP_TYPING,
 } from "../components/constants/events";
-import {
-  useChatDetailsQuery,
-  useGetMessagesQuery,
-  useGetGroupCreatorQuery,
-} from "../redux/api/api";
+import { useChatDetailsQuery, useGetMessagesQuery } from "../redux/api/api";
 import { useErrors, useSocketEvents } from "../hooks/hook";
 import { useInfiniteScrollTop } from "6pp";
 import { useDispatch } from "react-redux";
@@ -340,6 +356,7 @@ const Chat = ({ chatId, user }) => {
   const typingTimeout = useRef(null);
 
   const chatDetails = useChatDetailsQuery({ chatId, skip: !chatId });
+  
 
   const oldMessagesChunk = useGetMessagesQuery({ chatId, page });
 
@@ -348,11 +365,8 @@ const Chat = ({ chatId, user }) => {
     oldMessagesChunk.data?.totalPages,
     page,
     setPage,
-    oldMessagesChunk.data?.messages,
+    oldMessagesChunk.data?.messages
   );
-  const { data: creatorData, isLoading } = useGetGroupCreatorQuery(chatId, {
-    skip: !chatId,
-  });
 
   const errors = [
     { isError: chatDetails.isError, error: chatDetails.error },
@@ -360,8 +374,7 @@ const Chat = ({ chatId, user }) => {
   ];
 
   const members = chatDetails?.data?.chat?.members;
-  const group = chatDetails?.data?.chat;
-
+const group = chatDetails?.data?.chat;
   const messageOnChange = (e) => {
     setMessage(e.target.value);
 
@@ -392,6 +405,8 @@ const Chat = ({ chatId, user }) => {
     socket.emit(NEW_MESSAGE, { chatId, members, message });
     setMessage("");
   };
+  
+  
 
   useEffect(() => {
     socket.emit(CHAT_JOINED, { userId: user._id, members });
@@ -421,7 +436,7 @@ const Chat = ({ chatId, user }) => {
 
       setMessages((prev) => [...prev, data.message]);
     },
-    [chatId],
+    [chatId]
   );
 
   const startTypingListener = useCallback(
@@ -430,7 +445,7 @@ const Chat = ({ chatId, user }) => {
 
       setUserTyping(true);
     },
-    [chatId],
+    [chatId]
   );
 
   const stopTypingListener = useCallback(
@@ -438,7 +453,7 @@ const Chat = ({ chatId, user }) => {
       if (data.chatId !== chatId) return;
       setUserTyping(false);
     },
-    [chatId],
+    [chatId]
   );
 
   const alertListener = useCallback(
@@ -456,7 +471,7 @@ const Chat = ({ chatId, user }) => {
 
       setMessages((prev) => [...prev, messageForAlert]);
     },
-    [chatId],
+    [chatId]
   );
 
   const eventHandler = {
@@ -466,22 +481,30 @@ const Chat = ({ chatId, user }) => {
     [STOP_TYPING]: stopTypingListener,
   };
   useEffect(() => {
-    if (oldMessagesChunk.data?.messages?.length === 0) {
-      // setOldMessages([]);
-      // setMessages([]);
-    }
-  }, [oldMessagesChunk.data]);
+  if (oldMessagesChunk.data?.messages?.length === 0) {
+    setOldMessages([]);
+    setMessages([]);
+  }
+}, [oldMessagesChunk.data]);
 
   useSocketEvents(socket, eventHandler);
 
   useErrors(errors);
   useEffect(() => {
-    if (chatDetails.isError) {
-      navigate("/");
-    }
-  }, [chatDetails.isError]);
+  if (chatDetails.isError) {
+    navigate("/");
+  }
+}, [chatDetails.isError]);
 
   const allMessages = [...oldMessages, ...messages];
+
+//   const allMessages = [
+//   ...(oldMessagesChunk.data?.messages || []),
+//   ...messages,
+// ];
+
+
+
 
   return chatDetails.isLoading ? (
     <Skeleton />
@@ -489,8 +512,8 @@ const Chat = ({ chatId, user }) => {
     <Fragment>
       <Stack
         ref={containerRef}
-        // alignItems="flex-start"
-
+          // alignItems="flex-start"
+          
         boxSizing={"border-box"}
         padding={"1rem"}
         spacing={"1rem"}
@@ -499,35 +522,18 @@ const Chat = ({ chatId, user }) => {
         sx={{
           overflowX: "hidden",
           overflowY: "auto",
-          // minWidth: 0,
+            // minWidth: 0,  
         }}
+ 
+
+
       >
-        {group?.groupChat && (
-          <>
-            <Typography textAlign="center" fontWeight="bold">
-              Group - {group?.name}
-            </Typography>
-
-            <Typography textAlign="center" variant="caption">
-              Created by {creatorData?.creator?.name || "Admin"}
-            </Typography>
-          </>
-        )}
-        {allMessages.length === 0 && (
-          <Typography
-            textAlign="center"
-            color="text.secondary"
-            sx={{
-              margin: "auto",
-              fontSize: "1rem",
-            }}
-          >
-            No messages yet. Start a conversation 👋
-          </Typography>
-        )}
-
+        
         {allMessages.map((i) => (
-          <MessageComponent key={i._id} message={i} user={user} />
+          
+          <MessageComponent key={i._id} message={i} user={user}   
+ 
+  />
         ))}
 
         {userTyping && <TypingLoader />}
@@ -584,6 +590,7 @@ const Chat = ({ chatId, user }) => {
       </form>
 
       <FileMenu anchorEl={fileMenuAnchor} chatId={chatId} />
+      
     </Fragment>
   );
 };

@@ -195,12 +195,11 @@ const AppLayout = () => (WrappedComponent) => {
     }, [newMessagesAlert]);
 
     const handleDeleteChat = (element, chatId, groupChat) => {
-        console.log("element",element);
+      console.log("element", element);
       dispatch(setIsDeleteMenu(true));
       dispatch(setSelectedDeleteChat({ chatId, groupChat }));
       // deleteMenuAnchor.current = e.currentTarget;
-        deleteMenuAnchor.current = element;
-     
+      deleteMenuAnchor.current = element;
     };
 
     const handleMobileClose = () => dispatch(setIsMobileMenu(false));
@@ -235,6 +234,12 @@ const AppLayout = () => (WrappedComponent) => {
 
     useSocketEvents(socket, eventHandlers);
 
+    useEffect(() => {
+      if (user) {
+        refetch();
+      }
+    }, [user]);
+
     return (
       <>
         <Title />
@@ -260,28 +265,25 @@ const AppLayout = () => (WrappedComponent) => {
           </Drawer>
         )}
 
-        <Grid container
+        <Grid
+          container
           sx={{
-    height: "calc(100vh - 4rem)",
-    // paddingBottom:"2rem"
-
-  }}
- 
-  >
+            height: "calc(100vh - 4rem)",
+            // paddingBottom:"2rem"
+          }}
+        >
           {/* //left */}
 
-
-
-<Grid
-  item
-   height="100%" 
-  sx={{
-    width: "320px",
-    // flexShrink: 0,
-    display: { xs: "none", sm: "block" },
-  }}
->
-          {/* <Grid item sm={4} md={4}   height="100%" sx={{   display: { xs: "none", sm: "block" }}}> */}
+          <Grid
+            item
+            height="100%"
+            sx={{
+              width: "320px",
+              // flexShrink: 0,
+              display: { xs: "none", sm: "block" },
+            }}
+          >
+            {/* <Grid item sm={4} md={4}   height="100%" sx={{   display: { xs: "none", sm: "block" }}}> */}
             {isLoading ? (
               <Skeleton />
             ) : (
@@ -296,19 +298,31 @@ const AppLayout = () => (WrappedComponent) => {
           </Grid>
 
           {/* <Grid item xs={12} sm={8} md={6} lg={6} height="100%"> */}
-            <Grid item xs={12} sm={8} md={5}   height="100%" sx={{ flex: 1, minWidth: 0 }}>
+          <Grid
+            item
+            xs={12}
+            sm={8}
+            md={5}
+            height="100%"
+            sx={{ flex: 1, minWidth: 0 }}
+          >
             {/* <Grid item xs={12} sm={8} md={5} lg={6} height={"100%"}> */}
             {/* <Grid item xs={12} sm={8} md={4} lg={4} height="100%"> */}
             <WrappedComponent {...props} chatId={chatId} user={user} />
           </Grid>
 
-
-
-
-<Grid item md={3}    height="100%" sx={{ display: { xs: "none", md: "block" },
+          <Grid
+            item
+            md={3}
+            height="100%"
+            sx={{
+              display: { xs: "none", md: "block" },
               padding: "2rem",
-              bgcolor: "rgba(0,0,0,0.85)", flexShrink: 0 }}>
-          {/* <Grid
+              bgcolor: "rgba(0,0,0,0.85)",
+              flexShrink: 0,
+            }}
+          >
+            {/* <Grid
             item
             xs={12}
             md={3}

@@ -278,15 +278,7 @@ const api = createApi({
     }),
 
 
-    //mine
-//     clearChat: builder.mutation({
-//   query: (chatId) => ({
-//     url: `chat/clear/${chatId}`,
-//     method: "DELETE",
-//     credentials: "include",
-//   }),
-//   invalidatesTags: ["Message"],
-// }),
+
 
 clearChat: builder.mutation({
   query: (chatId) => ({
@@ -296,6 +288,22 @@ clearChat: builder.mutation({
   }),
   invalidatesTags: ["Chat", "Message"],
   
+}),
+
+
+// getGroupCreator: builder.query({
+//   query: (chatId) => ({
+//     url: `chat/group/creator/${chatId}`,
+//     credentials: "include",
+//   }),
+//   providesTags: ["Chat"],
+// }),
+
+getGroupCreator: builder.query({
+  query: (chatId) => ({
+    url: `chat/group/creator/${chatId}`,
+    credentials: "include",
+  }),
 }),
 
   }),
@@ -321,4 +329,5 @@ export const {
   useDeleteChatMutation,
   useLeaveGroupMutation,
   useClearChatMutation,
+   useGetGroupCreatorQuery,
 } = api;
