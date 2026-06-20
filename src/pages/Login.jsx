@@ -70,6 +70,7 @@ function Login() {
       toast.success(data.message, { id: toastId });
     } catch (err) {
       // toast.error(error.response?.data?.message || "Login failed",{id:toastId});
+        console.log("ERROR:", err.response?.data);
      const msg =
     typeof err?.response?.data?.message === "string"
       ? err.response.data.message
