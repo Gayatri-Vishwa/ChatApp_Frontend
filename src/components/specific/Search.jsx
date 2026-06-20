@@ -51,7 +51,7 @@ function Search() {
   typeof err?.data?.message === "string"
     ? err.data.message
     : err?.data?.message?.message ||
-      "Something went wrong";
+      "Request Already sent";
 
 toast.error(msg);
   }
