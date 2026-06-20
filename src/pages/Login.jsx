@@ -70,12 +70,12 @@ function Login() {
       toast.success(data.message, { id: toastId });
     } catch (err) {
       // toast.error(error.response?.data?.message || "Login failed",{id:toastId});
-      const msg =
-        typeof err?.data?.message === "string"
-          ? err.data.message
-          : err?.data?.message?.message || "Something went wrong";
+     const msg =
+    typeof err?.response?.data?.message === "string"
+      ? err.response.data.message
+      : err?.response?.data?.message?.message || "Login Failed";
 
-      toast.error(msg);
+  toast.error(msg);
     } finally {
       setIsLoading(false);
     }
@@ -115,11 +115,11 @@ function Login() {
       console.log(err);
       // toast.error(error.response?.data?.message || "Signup failed",{id:toastId});
       const msg =
-        typeof err?.data?.message === "string"
-          ? err.data.message
-          : err?.data?.message?.message || "SignUp Failed";
+    typeof err?.response?.data?.message === "string"
+      ? err.response.data.message
+      : err?.response?.data?.message?.message || "SignUp Failed";
 
-      toast.error(msg);
+  toast.error(msg);
     } finally {
       setIsLoading(false);
     }
