@@ -1,307 +1,3 @@
-///orignl not to dlete ==================
-
-
-
-// import React, {
-//   Fragment,
-//   memo,
-//   useCallback,
-//   useEffect,
-//   useRef,
-//   useState,
-// } from "react";
-// import AppLayout from "../components/layout/AppLayout";
-// import { Icon, IconButton, Skeleton, Stack, Typography } from "@mui/material";
-// import { grayColor, orange } from "../components/constants/Color";
-// import {
-//   AttachFile as AttachFileIcon,
-//   Send as SendIcon,
-// } from "@mui/icons-material";
-// import { InputBox } from "../components/styles/StyledComponents";
-// import FileMenu from "../components/dialogs/FileMenu";
-// import { sampleMessage } from "../components/constants/sampleData";
-// import MessageComponent from "../components/shared/MessageComponent";
-// import { getSocket } from "../utils/socket";
-// import { useChaDetailsQuery, useGetMessagesQuery } from "../redux/api/api";
-// // import { NEW_MESSAGE } from "../../../server/constants/event";
-// import { NEW_MESSAGE } from "../components/constants/events";
-// import { useDispatch, useSelector } from "react-redux";
-// import { useErrors, useSocketEvents } from "../Hooks/hook";
-// // import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-// import { useInfiniteScrollTop } from "6pp";
-// import { setIsFileMenu } from "../redux/reducers/misc";
-// import { removeNewMessagesAlert } from "../redux/reducers/chat";
-
-// const Chat = ({ chatId, user }) => {
-//   console.log("CHAT COMPONENT RENDERED");
-//   console.log("Chat prop chatId =", chatId);
-//   const containerRef = useRef(null);
-//   const socket = getSocket();
-//   const [message, setMessage] = useState("");
-//   const [messages, setMessages] = useState([]);
-//   const [page, setPage] = useState(1);
-//   const [fileMenuAnchor, setFileMenuAnchor] = useState(null);
-//   // const [showScrollButton, setShowScrollButton] = useState(false);
-//   const dispatch = useDispatch();
-
-//   // const chatDetails = useChaDetailsQuery({ chatId, skip: !chatId }); //if no chat id then skip "no call"
-//   const chatDetails = useChaDetailsQuery({ chatId }, { skip: !chatId });
-
-//   const oldMessagesChunk = useGetMessagesQuery(
-//     { chatId, page },
-//     { skip: !chatId },
-//   );
-// const chatIdRef = useRef(chatId);
-
-// useEffect(() => {
-//   chatIdRef.current = chatId;
-// }, [chatId]);
-
-//   const { data: oldMessages, setData: setOldMessages } = useInfiniteScrollTop(
-//     containerRef,
-//     oldMessagesChunk.data?.totalPages,
-//     page,
-//     setPage,
-//     oldMessagesChunk.data?.messages,
-//   );
-
-
- 
-//   const errors = [
-//     { isError: chatDetails.isError, error: chatDetails.error },
-//     { isError: oldMessagesChunk.isError, error: oldMessagesChunk.error },
-//   ];
-
-//   const allMessages = [...(oldMessages || []), ...messages];
-// //   const allMessages = [
-// //   ...(oldMessagesChunk.data?.messages || []),
-// //   ...messages,
-// // ];
-
-//   const members = chatDetails?.data?.chat?.members;
-//   //  const {user}=useSelector((state)=>state.auth)
-
-//   const handleFileOpen = (e) => {
-//     console.log("yes");
-//     dispatch(setIsFileMenu(true));
-//     setFileMenuAnchor(e.currentTarget);
-//   };
-
-//   const submitHandler = (e) => {
-//     e.preventDefault();
-
-//     if (!message.trim()) return;
-
-//     // Emitting the message to the server
-//     socket.emit(NEW_MESSAGE, { chatId, members, message });
-//     setMessage("");
-//   };
-
-//   useEffect(() => {
-//     oldMessagesChunk.refetch();
-//     // setMessages([]);
-//   }, [chatId]);
-
-
-
-
-//   console.log("oldMessages =", oldMessages);
-// console.log("messages =", messages);
-// console.log("allMessages =", allMessages);
-
-
-// const newMessagesHandler = useCallback((data) => {
-//   console.log("NEW MESSAGE RECEIVED", data);
-
-//   if (data.chatId.toString() !== chatId.toString()) return;
-
-//   setMessages((prev) => {
-//     console.log("prev messages =", prev);
-
-//     const updated = [...prev, data.message];
-
-//     console.log("updated messages =", updated);
-
-//     return updated;
-//   });
-// }, [chatId]);
-
-// //   const newMessagesHandler = useCallback(
-// //     (data) => {
-// //       console.log("NEW MESSAGE RECEIVED", data);
-// //       // if (data.chatId !== chatId) return;
-// // if (data.chatId.toString() !== chatId.toString()) return;
-      
-// //       setMessages((prev) => {
-// //         console.log("SETMESSAGES CALLED");
-// //         const exists = prev.find((msg) => msg._id === data.message._id);
-
-// //         if (exists) return prev;
-
-// //         return [...prev, data.message];
-// //       });
-// //       // setMessages((prev) => [...prev, data.message]);
-// //     },
-// //     [chatId],
-// //   );
-
-
-
-//   const eventHandler = { [NEW_MESSAGE]: newMessagesHandler };
-
-//   useSocketEvents(socket, eventHandler);
-
-//   useErrors(errors);
-//   useEffect(() => {
-//     console.log("CHAT MOUNTED");
-
-//     return () => {
-//       console.log("CHAT UNMOUNTED");
-//     };
-//   }, []);
- 
-
-
-//   useEffect(() => {
-//     dispatch(removeNewMessagesAlert(chatId));
-//     if (allMessages.length) {
-//       setTimeout(() => {
-//         containerRef.current?.scrollTo({
-//           top: containerRef.current.scrollHeight,
-//           behavior: "instant",
-//         });
-//       }, 0);
-//       // return () => {
-//       //   setMessages([]);
-//       //   setMessage("");
-//       //   // setOldMessages([]);
-//       //   setPage(1);
-//       // };
-//     }
-//   }, [ allMessages.length]);
-
-
-// console.log("page =", page);
-// console.log("totalPages =", oldMessagesChunk.data?.totalPages);
-// console.log("oldMessages length =", oldMessages?.length);
-// console.log("oldMessages =", oldMessages);
-// console.log("oldMessagesChunk.data?.messages =", oldMessagesChunk.data?.messages);
-// useEffect(() => {
-//   setMessages([]);
-//   setPage(1);
-  
-//   // setOldMessages([]);
-// }, [chatId]);
-
-// // useEffect(() => {
-// //   if (!containerRef.current || allMessages.length === 0) return;
-
-// //   setTimeout(() => {
-// //     containerRef.current.scrollTo({
-// //       top: containerRef.current.scrollHeight,
-// //       behavior: "smooth",
-// //     });
-// //   }, 50);
-
-// // }, [allMessages.length]);
-
-//   return chatDetails.isLoading ? (
-//     <Skeleton />
-//   ) : (
-//     <Fragment>
-//       <Stack
-//         ref={containerRef}
-//         boxSizing={"border-box"}
-//         padding={"1rem"}
-//         bgcolor={grayColor}
-//         height={"90%"}
-//         spacing={"1rem"}
-//         sx={{
-//           overflowX: "hidden",
-//           overflowY: "auto",
-//         }}
-//       >
-//         {allMessages.length === 0 && (
-//           <Typography textAlign="center" color="text.secondary" variant="body2">
-//             No messages yet. Say hello!
-//           </Typography>
-//         )}
-//         {/* messages render */}
-//         {allMessages?.map((i) => (
-//           <MessageComponent
-//             key={i._id}
-//             message={i}
-//             user={user}
-//             containerRef={containerRef}
-//           />
-//         ))}
-//       </Stack>
-
-//       <form
-//         style={{
-//           height: "10%",
-//         }}
-//         onSubmit={submitHandler}
-//       >
-//         <Stack
-//           direction={"row"}
-//           height={"100%"}
-//           padding={"1rem"}
-//           alignItems={"center"}
-//           position={"relative"}
-//         >
-//           <IconButton
-//             sx={{
-//               position: "absolute",
-//               left: "1.5rem",
-//               rotate: "30deg",
-//             }}
-//             onClick={handleFileOpen}
-//           >
-//             <AttachFileIcon />
-//           </IconButton>
-
-//           <InputBox
-//             rows={1}
-//             placeholder="Type message here ..."
-//             value={message}
-//             onChange={(e) => setMessage(e.target.value)}
-//           />
-
-//           <IconButton
-//             type="submit"
-//             sx={{
-//               // rotate:"-30deg",
-//               backgroundColor: orange,
-//               color: "white",
-//               marginLeft: "1rem",
-//               padding: "0.5rem",
-//               "&:hover": {
-//                 bgcolor: "error.dark",
-//               },
-//             }}
-//           >
-//             <SendIcon />
-//           </IconButton>
-//         </Stack>
-//       </form>
-
-//       <FileMenu anchorEl={fileMenuAnchor} chatId={chatId} />
-//     </Fragment>
-//   );
-// };
-
-// // export default memo(Chat)
-
-// export default AppLayout()(Chat);
-// // export default memo(AppLayout()(Chat));
-
-
-
-
-
-
-/////////////////////////////copy============================================================================================
 
 import React, {
   Fragment,
@@ -311,7 +7,7 @@ import React, {
   useState,
 } from "react";
 import AppLayout from "../components/layout/AppLayout";
-import { IconButton, Skeleton, Stack } from "@mui/material";
+import { IconButton, Skeleton, Stack, Typography } from "@mui/material";
 import { grayColor, orange } from "../components/constants/Color.js";
 import {
   AttachFile as AttachFileIcon,
@@ -329,7 +25,11 @@ import {
   START_TYPING,
   STOP_TYPING,
 } from "../components/constants/events";
-import { useChatDetailsQuery, useGetMessagesQuery } from "../redux/api/api";
+import {
+  useChatDetailsQuery,
+  useGetMessagesQuery,
+  useGetGroupCreatorQuery,
+} from "../redux/api/api";
 import { useErrors, useSocketEvents } from "../hooks/hook";
 import { useInfiniteScrollTop } from "6pp";
 import { useDispatch } from "react-redux";
@@ -356,7 +56,6 @@ const Chat = ({ chatId, user }) => {
   const typingTimeout = useRef(null);
 
   const chatDetails = useChatDetailsQuery({ chatId, skip: !chatId });
-  
 
   const oldMessagesChunk = useGetMessagesQuery({ chatId, page });
 
@@ -365,8 +64,11 @@ const Chat = ({ chatId, user }) => {
     oldMessagesChunk.data?.totalPages,
     page,
     setPage,
-    oldMessagesChunk.data?.messages
+    oldMessagesChunk.data?.messages,
   );
+  const { data: creatorData, isLoading } = useGetGroupCreatorQuery(chatId, {
+    skip: !chatId,
+  });
 
   const errors = [
     { isError: chatDetails.isError, error: chatDetails.error },
@@ -374,7 +76,8 @@ const Chat = ({ chatId, user }) => {
   ];
 
   const members = chatDetails?.data?.chat?.members;
-const group = chatDetails?.data?.chat;
+  const group = chatDetails?.data?.chat;
+
   const messageOnChange = (e) => {
     setMessage(e.target.value);
 
@@ -405,8 +108,6 @@ const group = chatDetails?.data?.chat;
     socket.emit(NEW_MESSAGE, { chatId, members, message });
     setMessage("");
   };
-  
-  
 
   useEffect(() => {
     socket.emit(CHAT_JOINED, { userId: user._id, members });
@@ -436,7 +137,7 @@ const group = chatDetails?.data?.chat;
 
       setMessages((prev) => [...prev, data.message]);
     },
-    [chatId]
+    [chatId],
   );
 
   const startTypingListener = useCallback(
@@ -445,7 +146,7 @@ const group = chatDetails?.data?.chat;
 
       setUserTyping(true);
     },
-    [chatId]
+    [chatId],
   );
 
   const stopTypingListener = useCallback(
@@ -453,7 +154,7 @@ const group = chatDetails?.data?.chat;
       if (data.chatId !== chatId) return;
       setUserTyping(false);
     },
-    [chatId]
+    [chatId],
   );
 
   const alertListener = useCallback(
@@ -471,7 +172,7 @@ const group = chatDetails?.data?.chat;
 
       setMessages((prev) => [...prev, messageForAlert]);
     },
-    [chatId]
+    [chatId],
   );
 
   const eventHandler = {
@@ -481,30 +182,22 @@ const group = chatDetails?.data?.chat;
     [STOP_TYPING]: stopTypingListener,
   };
   useEffect(() => {
-  if (oldMessagesChunk.data?.messages?.length === 0) {
-    setOldMessages([]);
-    setMessages([]);
-  }
-}, [oldMessagesChunk.data]);
+    if (oldMessagesChunk.data?.messages?.length === 0) {
+      // setOldMessages([]);
+      // setMessages([]);
+    }
+  }, [oldMessagesChunk.data]);
 
   useSocketEvents(socket, eventHandler);
 
   useErrors(errors);
   useEffect(() => {
-  if (chatDetails.isError) {
-    navigate("/");
-  }
-}, [chatDetails.isError]);
+    if (chatDetails.isError) {
+      navigate("/");
+    }
+  }, [chatDetails.isError]);
 
   const allMessages = [...oldMessages, ...messages];
-
-//   const allMessages = [
-//   ...(oldMessagesChunk.data?.messages || []),
-//   ...messages,
-// ];
-
-
-
 
   return chatDetails.isLoading ? (
     <Skeleton />
@@ -512,8 +205,8 @@ const group = chatDetails?.data?.chat;
     <Fragment>
       <Stack
         ref={containerRef}
-          // alignItems="flex-start"
-          
+        // alignItems="flex-start"
+
         boxSizing={"border-box"}
         padding={"1rem"}
         spacing={"1rem"}
@@ -522,18 +215,35 @@ const group = chatDetails?.data?.chat;
         sx={{
           overflowX: "hidden",
           overflowY: "auto",
-            // minWidth: 0,  
+          // minWidth: 0,
         }}
- 
-
-
       >
-        
+        {group?.groupChat && (
+          <>
+            <Typography textAlign="center" fontWeight="bold">
+              Group - {group?.name}
+            </Typography>
+
+            <Typography textAlign="center" variant="caption">
+              Created by {creatorData?.creator?.name || "Admin"}
+            </Typography>
+          </>
+        )}
+        {allMessages.length === 0 && (
+          <Typography
+            textAlign="center"
+            color="text.secondary"
+            sx={{
+              margin: "auto",
+              fontSize: "1rem",
+            }}
+          >
+            No messages yet. Start a conversation 👋
+          </Typography>
+        )}
+
         {allMessages.map((i) => (
-          
-          <MessageComponent key={i._id} message={i} user={user}   
- 
-  />
+          <MessageComponent key={i._id} message={i} user={user} />
         ))}
 
         {userTyping && <TypingLoader />}
@@ -590,7 +300,6 @@ const group = chatDetails?.data?.chat;
       </form>
 
       <FileMenu anchorEl={fileMenuAnchor} chatId={chatId} />
-      
     </Fragment>
   );
 };

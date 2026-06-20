@@ -101,16 +101,8 @@ function Search() {
             ),
           }}
         />
-        {/* <List>
-          {users.map((i) => (
-            <UserItem
-              user={i}
-              key={i._id}
-              handler={addFriendHandler}
-              handlerIsLoading={isLoadingSendFriendRequest}
-            />
-          ))}
-        </List> */}
+      
+
         <List>
   {users.length > 0 ? (
     users.map((i) => (
@@ -118,7 +110,8 @@ function Search() {
         user={i}
         key={i._id}
         handler={addFriendHandler}
-        handlerIsLoading={isLoading}
+        // handlerIsLoading={isLoading}
+        handlerIsLoading={isLoadingSendFriendRequest}
       />
     ))
   ) : (

@@ -1,121 +1,290 @@
+// import {
+//   Box,
+//   Drawer,
+//   Grid,
+//   IconButton,
+//   Stack,
+//   styled,
+//   Typography,
+// } from "@mui/material";
+// import React, { useState } from "react";
+// import {
+//   Dashboard as DashboardIcon,
+//   Menu as MenuIcon,
+//   Close as CloseIcon,
+//   ManageAccounts as ManageAccountsManagement,
+//   Group as GroupIcon,
+//   Message as MessageIcon,
+//   ExitToApp as ExitToAppIcon,
+// } from "@mui/icons-material";
+// import { useLocation, Link as LinkComponent, Navigate } from "react-router-dom";
+//  import { useDispatch, useSelector } from "react-redux";
+// // import { Link } from "../styles/StyledComponents";
+// import { grayColor, matBlack } from "../constants/Color";
+// function AdminLayout({ children }) {
+//   const location = useLocation();
+
+//   const [isMobile, setIsMobile] = useState(false);
+//    const { isAdmin } = useSelector((state) => state.auth);
+
+//   const Link = styled(LinkComponent)`
+//     text-decoration: "none";
+//     border-radius: 2rem;
+//     padding: 1rem 2rem;
+//     color: black;
+//     &:hover {
+//       color: rgba(0, 0, 0, 0.54);
+//     }
+//   `;
+
+//   const adminTabs = [
+//     {
+//       name: "Dashboard",
+//       path: "/admin/dashboard",
+//       icon: <DashboardIcon />,
+//     },
+//     {
+//       name: "User",
+//       path: "/admin/user",
+//       icon: <ManageAccountsManagement />,
+//     },
+//     {
+//       name: "Chat",
+//       path: "/admin/chat",
+//       icon: <GroupIcon />,
+//     },
+//     {
+//       name: "Message",
+//       path: "/admin/message",
+//       icon: <MessageIcon />,
+//     },
+//   ];
+//   const logoutHandler = () => {};
+
+//   const handleMobile = () => setIsMobile(true);
+
+//   const handleClose = () => setIsMobile(false);
+
+//   const Sidebar = ({ w = "100%" }) => {
+//      const { isAdmin } = useSelector((state) => state.auth);
+//     return (
+//       <Stack width={w} direction={"column"} p={"3rem"} spacing={"3rem"}>
+//         <Typography variant="h5" textTransform={"uppercase"}>
+//           chattu
+//         </Typography>
+//         <Stack spacing={"1rem"}>
+//           {adminTabs.map((i) => (
+//             <Link
+//               key={i.path}
+//               to={i.path}
+//               sx={
+//                 location.pathname === i.path && {
+//                   bgcolor: matBlack,
+//                   color: "white",
+//                   ":hover": {
+//                     color: "white",
+//                   },
+//                 }
+//               }
+//             >
+//               <Stack direction={"row"} alignItems={"center"} spacing={"1rem"}>
+//                 {i.icon}
+//                 <Typography >{i.name}</Typography>
+//               </Stack>
+//             </Link>
+//           ))}
+
+//           <Link onClick={logoutHandler}>
+//             <Stack direction={"row"} alignItems={"center"} spacing={"1rem"}>
+//               <ExitToAppIcon />
+//               <Typography>Logout</Typography>
+//             </Stack>
+//           </Link>
+//         </Stack>
+//       </Stack>
+//     );
+//   };
+//   // const isAdmin=true
+
+//   if(!isAdmin) return <Navigate to={'/admin'}/>
+
+//   return (
+//     <Grid container minHeight={"100vh"}>
+//       <Box
+//         sx={{
+//           position: "fixed",
+//           right: "1rem",
+//           top: "1rem",
+//           display: {
+//             xs: "block",
+//             md: "none",
+//           },
+//         }}
+//       >
+//         <IconButton onClick={handleMobile}>
+//           {isMobile ? <CloseIcon /> : <MenuIcon />}
+//         </IconButton>
+//       </Box>
+
+//       <Grid
+//         size={{ md: 4, lg: 3 }}
+//         sx={{
+//           display: {
+//             xs: "none",
+//             md: "block",
+//           },
+//         }}
+//       >
+//         <Sidebar width="50vw" />
+//       </Grid>
+
+//       <Grid
+//         size={{ md: 8, lg: 9, xs: 12 }}
+//         sx={{
+//           bgcolor: "#f5f5f5",
+//         }}
+//       >
+//         {children}
+//       </Grid>
+
+//       <Drawer open={isMobile} onClose={handleClose}>
+//         <Sidebar width={"50vw"} />
+//       </Drawer>
+//     </Grid>
+//   );
+// }
+
+// export default AdminLayout;
+
+
+
+
+// ======================================================================================================
+
+
+import {
+  Close as CloseIcon,
+  Dashboard as DashboardIcon,
+  ExitToApp as ExitToAppIcon,
+  Groups as GroupsIcon,
+  ManageAccounts as ManageAccountsIcon,
+  Menu as MenuIcon,
+  Message as MessageIcon,
+} from "@mui/icons-material";
 import {
   Box,
   Drawer,
   Grid,
   IconButton,
   Stack,
-  styled,
   Typography,
+  styled,
 } from "@mui/material";
 import React, { useState } from "react";
-import {
-  Dashboard as DashboardIcon,
-  Menu as MenuIcon,
-  Close as CloseIcon,
-  ManageAccounts as ManageAccountsManagement,
-  Group as GroupIcon,
-  Message as MessageIcon,
-  ExitToApp as ExitToAppIcon,
-} from "@mui/icons-material";
-import { useLocation, Link as LinkComponent, Navigate } from "react-router-dom";
-// import { Link } from "../styles/StyledComponents";
-import { grayColor, matBlack } from "../constants/Color";
-function AdminLayout({ children }) {
+import { Link as LinkComponent, Navigate, useLocation } from "react-router-dom";
+import { grayColor, matBlack } from "../../components/constants/color";
+import { useDispatch, useSelector } from "react-redux";
+import { adminLogout } from "../../redux/thunks/admin";
+
+const Link = styled(LinkComponent)`
+  text-decoration: none;
+  border-radius: 2rem;
+  padding: 1rem 2rem;
+  color: black;
+  &:hover {
+    color: rgba(0, 0, 0, 0.54);
+  }
+`;
+
+const adminTabs = [
+  {
+    name: "Dashboard",
+    path: "/admin/dashboard",
+    icon: <DashboardIcon />,
+  },
+  {
+    name: "Users",
+    path: "/admin/users",
+    icon: <ManageAccountsIcon />,
+  },
+  {
+    name: "Chats",
+    path: "/admin/chats",
+    icon: <GroupsIcon />,
+  },
+  {
+    name: "Messages",
+    path: "/admin/messages",
+    icon: <MessageIcon />,
+  },
+];
+
+const Sidebar = ({ w = "100%" }) => {
   const location = useLocation();
+  const dispatch = useDispatch();
+
+  const logoutHandler = () => {
+    dispatch(adminLogout());
+  };
+
+  return (
+    <Stack width={w} direction={"column"} p={"3rem"} spacing={"3rem"}>
+      <Typography variant="h5" textTransform={"uppercase"}>
+        Chattu
+      </Typography>
+
+      <Stack spacing={"1rem"}>
+        {adminTabs.map((tab) => (
+          <Link
+            key={tab.path}
+            to={tab.path}
+            sx={
+              location.pathname === tab.path && {
+                bgcolor: matBlack,
+                color: "white",
+                ":hover": { color: "white" },
+              }
+            }
+          >
+            <Stack direction={"row"} alignItems={"center"} spacing={"1rem"}>
+              {tab.icon}
+
+              <Typography>{tab.name}</Typography>
+            </Stack>
+          </Link>
+        ))}
+
+        <Link onClick={logoutHandler}>
+          <Stack direction={"row"} alignItems={"center"} spacing={"1rem"}>
+            <ExitToAppIcon />
+
+            <Typography>Logout</Typography>
+          </Stack>
+        </Link>
+      </Stack>
+    </Stack>
+  );
+};
+
+const AdminLayout = ({ children }) => {
+  const { isAdmin } = useSelector((state) => state.auth);
 
   const [isMobile, setIsMobile] = useState(false);
 
-  const Link = styled(LinkComponent)`
-    text-decoration: "none";
-    border-radius: 2rem;
-    padding: 1rem 2rem;
-    color: black;
-    &:hover {
-      color: rgba(0, 0, 0, 0.54);
-    }
-  `;
-
-  const adminTabs = [
-    {
-      name: "Dashboard",
-      path: "/admin/dashboard",
-      icon: <DashboardIcon />,
-    },
-    {
-      name: "User",
-      path: "/admin/user",
-      icon: <ManageAccountsManagement />,
-    },
-    {
-      name: "Chat",
-      path: "/admin/chat",
-      icon: <GroupIcon />,
-    },
-    {
-      name: "Message",
-      path: "/admin/message",
-      icon: <MessageIcon />,
-    },
-  ];
-  const logoutHandler = () => {};
-
-  const handleMobile = () => setIsMobile(true);
+  const handleMobile = () => setIsMobile(!isMobile);
 
   const handleClose = () => setIsMobile(false);
 
-  const Sidebar = ({ w = "100%" }) => {
-    return (
-      <Stack width={w} direction={"column"} p={"3rem"} spacing={"3rem"}>
-        <Typography variant="h5" textTransform={"uppercase"}>
-          chattu
-        </Typography>
-        <Stack spacing={"1rem"}>
-          {adminTabs.map((i) => (
-            <Link
-              key={i.path}
-              to={i.path}
-              sx={
-                location.pathname === i.path && {
-                  bgcolor: matBlack,
-                  color: "white",
-                  ":hover": {
-                    color: "white",
-                  },
-                }
-              }
-            >
-              <Stack direction={"row"} alignItems={"center"} spacing={"1rem"}>
-                {i.icon}
-                <Typography >{i.name}</Typography>
-              </Stack>
-            </Link>
-          ))}
-
-          <Link onClick={logoutHandler}>
-            <Stack direction={"row"} alignItems={"center"} spacing={"1rem"}>
-              <ExitToAppIcon />
-              <Typography>Logout</Typography>
-            </Stack>
-          </Link>
-        </Stack>
-      </Stack>
-    );
-  };
-  const isAdmin=true
-
-  if(!isAdmin) return <Navigate to={'/admin'}/>
+  if (!isAdmin) return <Navigate to="/admin" />;
 
   return (
     <Grid container minHeight={"100vh"}>
       <Box
         sx={{
+          display: { xs: "block", md: "none" },
           position: "fixed",
           right: "1rem",
           top: "1rem",
-          display: {
-            xs: "block",
-            md: "none",
-          },
         }}
       >
         <IconButton onClick={handleMobile}>
@@ -123,32 +292,27 @@ function AdminLayout({ children }) {
         </IconButton>
       </Box>
 
-      <Grid
-        size={{ md: 4, lg: 3 }}
-        sx={{
-          display: {
-            xs: "none",
-            md: "block",
-          },
-        }}
-      >
-        <Sidebar width="50vw" />
+      <Grid item md={4} lg={3} sx={{ display: { xs: "none", md: "block" } }}>
+        <Sidebar />
       </Grid>
 
       <Grid
-        size={{ md: 8, lg: 9, xs: 12 }}
+        item
+        xs={12}
+        md={8}
+        lg={9}
         sx={{
-          bgcolor: "#f5f5f5",
+          bgcolor: grayColor,
         }}
       >
         {children}
       </Grid>
 
       <Drawer open={isMobile} onClose={handleClose}>
-        <Sidebar width={"50vw"} />
+        <Sidebar w="50vw" />
       </Drawer>
     </Grid>
   );
-}
+};
 
 export default AdminLayout;

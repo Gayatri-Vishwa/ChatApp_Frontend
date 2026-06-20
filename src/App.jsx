@@ -72,9 +72,9 @@ useEffect(() => {
 
             <Route path="/admin" element={<AdminLogin />} />
             <Route path="/admin/dashboard" element={<DashBoard />} />
-            <Route path="/admin/user" element={<UserManagement />} />
-            <Route path="/admin/message" element={<MessageManagement />} />
-            <Route path="/admin/chat" element={<ChatManagement />} />
+            <Route path="/admin/users" element={<UserManagement />} />
+            <Route path="/admin/messages" element={<MessageManagement />} />
+            <Route path="/admin/chats" element={<ChatManagement />} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>

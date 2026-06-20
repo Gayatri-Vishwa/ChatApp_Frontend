@@ -27,6 +27,7 @@ import toast from "react-hot-toast";
 
 function Login() {
   const [isLogin, setIsLogin] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   // const {user}=useSelector((state)=>state.auth)
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -49,7 +50,9 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+const toastId= toast.loading("Loading In....")
 
+setIsLoading(true)
     const config = {
       withCredentials: true,
       headers: {
@@ -67,17 +70,22 @@ function Login() {
       );
       dispatch(userExists(data.data));
       navigate("/");
-      toast.success(data.message);
+      toast.success(data.message,{id:toastId});
     } catch (error) {
     
-      toast.error(error.response?.data?.message || "Login failed");
+      toast.error(error.response?.data?.message || "Login failed",{id:toastId});
       
+    }
+    finally{
+      setIsLoading(false)
     }
   };
 
   const handleSignup = async (e) => {
     e.preventDefault();
     // // Perform signup logic here
+    const toastId= toast.loading("Signing In...")
+     setIsLoading(true)
 
     const config = {
       withCredentials: true,
@@ -102,10 +110,12 @@ function Login() {
       // dispatch(userExists(true));
        dispatch(userExists(data.data));
       navigate("/");
-      toast.success(data.message);
+      toast.success(data.message,{id:toastId});
     } catch (error) {
       console.log(error);
-      toast.error(error.response?.data?.message || "Signup failed");
+      toast.error(error.response?.data?.message || "Signup failed",{id:toastId});
+    } finally{
+      setIsLoading(false)
     }
 
   };
@@ -197,6 +207,7 @@ function Login() {
                   fullWidth
                   variant="contained"
                   color="primary"
+                  disabled={isLoading}
                 >
                   {" "}
                   Login{" "}
@@ -204,7 +215,7 @@ function Login() {
 
                 <Typography> OR</Typography>
 
-                <Button fullWidth variant="text" onClick={toggleLogin}>
+                <Button fullWidth variant="text" onClick={toggleLogin}  disabled={isLoading}>
                   {" "}
                   Sign Up instead
                 </Button>
@@ -232,56 +243,7 @@ function Login() {
                 }}
                 onSubmit={handleSignup}
               >
-                {/* <Stack position={"relative"} width={"10rem"} margin={"auto"}>
-                  <Avatar
-                    sx={{
-                      width: "10rem",
-                      height: "10rem",
-                      objectFit: "contain",
-                      position: "relative",
-                      bgcolor: "primary.light",
-                    }}
-                    src={avatar.preview}
-                  />
-                  {avatar.error && (
-                    <Typography
-                      color="error"
-                      margin={"1rem auto"}
-                      // marginRight={"1rem "}
-                      display={"block"}
-                      width={"fit-content"}
-                        variant="body2"
-                      // width="100%"
-                      // textAlign="right" 
-                    
-
-                    >
-                      {avatar.error}
-                    </Typography>
-                  )}
-
-                  <IconButton
-                    sx={{
-                      position: "absolute",
-                      bottom: 0,
-                      right: 0,
-                      color: "white",
-                      bgcolor: "rgba(0,0,0,0.5)",
-                      ":hover": {
-                        bgcolor: "rgba(0,0,0,0.7)",
-                      },
-                    }}
-                    component="label"
-                  >
-                    <>
-                      <CameraAltIcon />
-                      <VisuallyHiddenInput
-                        type="file"
-                        onChange={avatar.changeHandler}
-                      />
-                    </>
-                  </IconButton>
-                </Stack> */}
+            
 
                 <Stack alignItems="center">
                   <Stack position="relative" width="10rem">
@@ -370,6 +332,7 @@ function Login() {
                 )}
 
                 <Button
+                 disabled={isLoading}
                   type="submit"
                   fullWidth
                   variant="contained"
@@ -381,7 +344,7 @@ function Login() {
 
                 <Typography> OR</Typography>
 
-                <Button fullWidth variant="text" onClick={toggleLogin}>
+                <Button   disabled={isLoading} fullWidth variant="text" onClick={toggleLogin}>
                   Login instead
                 </Button>
               </form>
@@ -394,3 +357,5 @@ function Login() {
 }
 
 export default Login;
+
+
