@@ -32,30 +32,30 @@ function Search() {
 
   // let isLoadingSendFriendRequest = false;
 
-  // const addFriendHandler = async (id) => {
-  //  const res= await sendFriendRequest("Sending friend request ...",{ userId:id})
-  //     toast.success(res.message || "Request sent successfully");
-  //     console.log("senttttttttt");
+  const addFriendHandler = async (id) => {
+   const res= await sendFriendRequest("Sending friend request ...",{ userId:id})
+      toast.success(res.message || "Request sent successfully");
+      console.log("senttttttttt");
       
 
-  // };
+  };
 
 
-  const addFriendHandler = async (id) => {
-  try {
-    const res = await sendFriendRequest({ userId: id })
-    toast.success(res.message || "Request sent successfully");
-  } catch (err) {
-    // toast.error(err?.data?.message || "Something went wrong");
-    const msg =
-  typeof err?.data?.message === "string"
-    ? err.data.message
-    : err?.data?.message?.message ||
-      "Request Already sent";
+//   const addFriendHandler = async (id) => {
+//   try {
+//     const res = await sendFriendRequest({ userId: id })
+//     toast.success(res.message || "Request sent successfully");
+//   } catch (err) {
+//     // toast.error(err?.data?.message || "Something went wrong");
+//     const msg =
+//   typeof err?.data?.message === "string"
+//     ? err.data.message
+//     : err?.data?.message?.message ||
+//       "Request Already sent";
 
-toast.error(msg);
-  }
-};
+// toast.error(msg );
+//   }
+// };
 
   const searchCloseHandler = () => {
     dispatch(setIsSearch(false));
