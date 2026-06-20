@@ -35,6 +35,8 @@ function Search() {
   const addFriendHandler = async (id) => {
    const res= await sendFriendRequest("Sending friend request ...",{ userId:id})
       toast.success(res.message || "Request sent successfully");
+      console.log("senttttttttt");
+      
 
   };
 
