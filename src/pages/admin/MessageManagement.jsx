@@ -7,7 +7,7 @@ import AdminLayout from "../../components/layout/AdminLayout";
 import RenderAttachment from "../../components/shared/RenderAttachments";
 import Table from "../../components/shared/Table";
 import { server } from "../../components/constants/config";
-import { useErrors } from "../../hooks/hook";
+import { useErrors } from "../../Hooks/hook";
 import { fileFormat, transformImage } from "../../lib/featues";
 
 const columns = [

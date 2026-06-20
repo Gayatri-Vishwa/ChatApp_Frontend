@@ -229,7 +229,7 @@ import {
 } from "../../components/styles/StyledComponents";
 import { matBlack } from "../../components/constants/color";
 import { server } from "../../components/constants/config";
-import { useErrors } from "../../hooks/hook";
+import { useErrors } from "../../Hooks/hook";
 
 const Dashboard = () => {
   // const { loading, data, error } = useFetchData(

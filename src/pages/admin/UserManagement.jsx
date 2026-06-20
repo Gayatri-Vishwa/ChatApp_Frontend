@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import AdminLayout from "../../components/layout/AdminLayout";
 import Table from "../../components/shared/Table";
 import { server } from "../../components/constants/config";
-import { useErrors } from "../../hooks/hook";
+import { useErrors } from "../../Hooks/hook";
 import { transformImage } from "../../lib/featues";
 
 const columns = [
