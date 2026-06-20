@@ -110,8 +110,8 @@ function Search() {
         user={i}
         key={i._id}
         handler={addFriendHandler}
-        // handlerIsLoading={isLoading}
-        handlerIsLoading={isLoadingSendFriendRequest}
+        handlerIsLoading={isLoading}
+        // handlerIsLoading={isLoadingSendFriendRequest}
       />
     ))
   ) : (
