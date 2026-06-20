@@ -40,29 +40,15 @@ function Search() {
 
   // };
 
+
   const addFriendHandler = async (id) => {
   try {
     const res = await sendFriendRequest({ userId: id }).unwrap();
     toast.success(res.message || "Request sent successfully");
   } catch (err) {
-    console.log("FULL ERROR:", err);
-    toast.error(
-      err?.data?.message ||
-      err?.error?.data?.message ||
-      "Something went wrong"
-    );
+    toast.error(err?.data?.message || "Something went wrong");
   }
 };
-
-
-//   const addFriendHandler = async (id) => {
-//   try {
-//     const res = await sendFriendRequest({ userId: id })
-//     toast.success(res.message || "Request sent successfully");
-//   } catch (err) {
-//     toast.error(err?.data?.message || "Something went wrong");
-//   }
-// };
 
   const searchCloseHandler = () => {
     dispatch(setIsSearch(false));
