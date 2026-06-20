@@ -30,7 +30,7 @@ import {
   useGetMessagesQuery,
   useGetGroupCreatorQuery,
 } from "../redux/api/api";
-import { useErrors, useSocketEvents } from "../hooks/hook";
+import { useErrors, useSocketEvents } from "../Hooks/hook";
 import { useInfiniteScrollTop } from "6pp";
 import { useDispatch } from "react-redux";
 import { setIsFileMenu } from "../redux/reducers/misc";

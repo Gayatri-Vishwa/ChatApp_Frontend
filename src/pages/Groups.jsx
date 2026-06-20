@@ -422,7 +422,7 @@ import { Link } from "../components/styles/StyledComponents";
 import { bgGradient, matBlack } from "../components/constants/Color.js";
 import { useDispatch, useSelector } from "react-redux";
 import UserItem from "../components/shared/UserItem";
-import { useAsyncMutation, useErrors } from "../hooks/hook";
+import { useAsyncMutation, useErrors } from "../Hooks/hook";
 import {
   useChatDetailsQuery,
   useDeleteChatMutation,

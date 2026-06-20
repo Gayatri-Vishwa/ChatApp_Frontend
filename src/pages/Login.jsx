@@ -22,9 +22,6 @@ import { useNavigate } from "react-router-dom";
 import { userExists } from "../redux/reducers/auth";
 import toast from "react-hot-toast";
 
-// import { userNotExists } from "../redux/reducers/auth";
-// import formData from ''
-
 function Login() {
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
