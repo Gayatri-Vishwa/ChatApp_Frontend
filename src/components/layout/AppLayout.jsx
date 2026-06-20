@@ -10,7 +10,7 @@ import {
   ONLINE_USERS,
   REFETCH_CHATS,
 } from "../constants/events";
-import { useErrors, useSocketEvents } from "../../hooks/hook";
+import { useErrors, useSocketEvents } from "../../Hooks/hook";
 import { getOrSaveFromStorage } from "../../lib/featues";
 import { useMyChatsQuery } from "../../redux/api/api";
 import {
