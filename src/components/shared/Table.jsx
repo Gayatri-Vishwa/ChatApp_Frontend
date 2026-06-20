@@ -1,7 +1,7 @@
 import { Container, Paper, Typography } from "@mui/material";
 import React from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { matBlack } from "../constants/Color";
+import { matBlack } from "../constants/Color.js";
 
 function Table({ rows, columns, heading, rowHeight = 52 }) {
   return (

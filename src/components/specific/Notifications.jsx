@@ -10,7 +10,6 @@ import {
   Typography,
   Skeleton,
 } from "@mui/material";
-// import { sampleNotifications } from "../constants/sampleData";
 import {
   useAcceptFriendRequestMutation,
   useGetNotificationsQuery,

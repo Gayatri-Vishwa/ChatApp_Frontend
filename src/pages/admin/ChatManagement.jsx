@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import AdminLayout from "../../components/layout/AdminLayout";
 import AvatarCard from "../../components/shared/AvatarCard";
 import Table from "../../components/shared/Table";
-import { server } from "../../components/constants/config";
+import { server } from "../../components/constants/config.js";
 import { useErrors } from "../../Hooks/hook";
 import { transformImage } from "../../lib/featues";
 

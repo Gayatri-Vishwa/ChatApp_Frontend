@@ -11,7 +11,7 @@ import {
   LinearScale,
   Chart as ChartJS,
 } from "chart.js";
-import { orange, orangeLight, purple, purpleLight } from "../constants/Color";
+import { orange, orangeLight, purple, purpleLight } from "../constants/Color.js";
 import { getLast7Days } from "../../lib/featues";
 
 ChartJS.register(

@@ -11,7 +11,7 @@ import {
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import { bgGradient } from "../../components/constants/Color";
+import { bgGradient } from "../../components/constants/Color.js";
 import { adminLogin, getAdmin } from "../../redux/thunks/admin";
 
 
