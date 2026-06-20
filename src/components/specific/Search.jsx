@@ -43,7 +43,7 @@ function Search() {
 
   const addFriendHandler = async (id) => {
   try {
-    const res = await sendFriendRequest({ userId: id }).unwrap();
+    const res = await sendFriendRequest({ userId: id })
     toast.success(res.message || "Request sent successfully");
   } catch (err) {
     toast.error(err?.data?.message || "Something went wrong");
