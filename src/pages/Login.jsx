@@ -73,7 +73,7 @@ function Login() {
      const msg =
     typeof err?.response?.data?.message === "string"
       ? err.response.data.message
-      : err?.response?.data?.message?.message ;
+      : err?.response?.data?.message?.message || "Login Failed";
 
   toast.error(msg,{id:toastId});
     } finally {
