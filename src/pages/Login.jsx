@@ -47,9 +47,9 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-const toastId= toast.loading("Loading In....")
+    const toastId = toast.loading("Loading In....");
 
-setIsLoading(true)
+    setIsLoading(true);
     const config = {
       withCredentials: true,
       headers: {
@@ -67,22 +67,25 @@ setIsLoading(true)
       );
       dispatch(userExists(data.data));
       navigate("/");
-      toast.success(data.message,{id:toastId});
-    } catch (error) {
-    
-      toast.error(error.response?.data?.message || "Login failed",{id:toastId});
-      
-    }
-    finally{
-      setIsLoading(false)
+      toast.success(data.message, { id: toastId });
+    } catch (err) {
+      // toast.error(error.response?.data?.message || "Login failed",{id:toastId});
+      const msg =
+        typeof err?.data?.message === "string"
+          ? err.data.message
+          : err?.data?.message?.message || "Something went wrong";
+
+      toast.error(msg);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleSignup = async (e) => {
     e.preventDefault();
     // // Perform signup logic here
-    const toastId= toast.loading("Signing In...")
-     setIsLoading(true)
+    const toastId = toast.loading("Signing In...");
+    setIsLoading(true);
 
     const config = {
       withCredentials: true,
@@ -105,16 +108,21 @@ setIsLoading(true)
         config,
       );
       // dispatch(userExists(true));
-       dispatch(userExists(data.data));
+      dispatch(userExists(data.data));
       navigate("/");
-      toast.success(data.message,{id:toastId});
-    } catch (error) {
-      console.log(error);
-      toast.error(error.response?.data?.message || "Signup failed",{id:toastId});
-    } finally{
-      setIsLoading(false)
-    }
+      toast.success(data.message, { id: toastId });
+    } catch (err) {
+      console.log(err);
+      // toast.error(error.response?.data?.message || "Signup failed",{id:toastId});
+      const msg =
+        typeof err?.data?.message === "string"
+          ? err.data.message
+          : err?.data?.message?.message || "SignUp Failed";
 
+      toast.error(msg);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -212,7 +220,12 @@ setIsLoading(true)
 
                 <Typography> OR</Typography>
 
-                <Button fullWidth variant="text" onClick={toggleLogin}  disabled={isLoading}>
+                <Button
+                  fullWidth
+                  variant="text"
+                  onClick={toggleLogin}
+                  disabled={isLoading}
+                >
                   {" "}
                   Sign Up instead
                 </Button>
@@ -240,8 +253,6 @@ setIsLoading(true)
                 }}
                 onSubmit={handleSignup}
               >
-            
-
                 <Stack alignItems="center">
                   <Stack position="relative" width="10rem">
                     <Avatar
@@ -329,7 +340,7 @@ setIsLoading(true)
                 )}
 
                 <Button
-                 disabled={isLoading}
+                  disabled={isLoading}
                   type="submit"
                   fullWidth
                   variant="contained"
@@ -341,7 +352,12 @@ setIsLoading(true)
 
                 <Typography> OR</Typography>
 
-                <Button   disabled={isLoading} fullWidth variant="text" onClick={toggleLogin}>
+                <Button
+                  disabled={isLoading}
+                  fullWidth
+                  variant="text"
+                  onClick={toggleLogin}
+                >
                   Login instead
                 </Button>
               </form>
@@ -354,5 +370,3 @@ setIsLoading(true)
 }
 
 export default Login;
-
-

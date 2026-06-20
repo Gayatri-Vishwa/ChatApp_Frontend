@@ -46,7 +46,14 @@ function Search() {
     const res = await sendFriendRequest({ userId: id })
     toast.success(res.message || "Request sent successfully");
   } catch (err) {
-    toast.error(err?.data?.message || "Something went wrong");
+    // toast.error(err?.data?.message || "Something went wrong");
+    const msg =
+  typeof err?.data?.message === "string"
+    ? err.data.message
+    : err?.data?.message?.message ||
+      "Something went wrong";
+
+toast.error(msg);
   }
 };
 
