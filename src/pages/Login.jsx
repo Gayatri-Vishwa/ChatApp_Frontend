@@ -75,7 +75,7 @@ function Login() {
       ? err.response.data.message
       : err?.response?.data?.message?.message ;
 
-  toast.error(msg);
+  toast.error(msg,{id:toastId});
     } finally {
       setIsLoading(false);
     }
@@ -119,7 +119,7 @@ function Login() {
       ? err.response.data.message
       : err?.response?.data?.message?.message || "SignUp Failed";
 
-  toast.error(msg);
+  toast.error(msg,{id:toastId});
     } finally {
       setIsLoading(false);
     }
