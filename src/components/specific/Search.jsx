@@ -25,6 +25,7 @@ function Search() {
   const [searchUser] = useLazySearchUserQuery();
   // const [sendFriendRequest,isLoadingSendFriendRequest] = useAsyncMutation(useSendFriendRequestMutation);
   const [sendFriendRequest, { isLoading },isLoadingSendFriendRequest] = useSendFriendRequestMutation();
+  const [loadingUserId, setLoadingUserId] = useState(null);
 
   const dispatch = useDispatch();
   const search = useInputValidation("");
@@ -32,30 +33,34 @@ function Search() {
 
   // let isLoadingSendFriendRequest = false;
 
-  const addFriendHandler = async (id) => {
-   const res= await sendFriendRequest("Sending friend request ...",{ userId:id})
-      toast.success(res.message || "Request sent successfully");
-      console.log("senttttttttt");
+  // const addFriendHandler = async (id) => {
+  //  const res= await sendFriendRequest("Sending friend request ...",{ userId:id})
+  //     toast.success(res.message || "Request sent successfully");
+  //     console.log("senttttttttt");
       
 
-  };
+  // };
 
 
-//   const addFriendHandler = async (id) => {
-//   try {
-//     const res = await sendFriendRequest({ userId: id })
-//     toast.success(res.message || "Request sent successfully");
-//   } catch (err) {
-//     // toast.error(err?.data?.message || "Something went wrong");
-//     const msg =
-//   typeof err?.data?.message === "string"
-//     ? err.data.message
-//     : err?.data?.message?.message ||
-//       "Request Already sent";
+  const addFriendHandler = async (id) => {
+  try {
+     setLoadingUserId(id);
+    const res = await sendFriendRequest({ userId: id })
+    // toast.success(res.message || "Request sent successfully");
+    toast.success(res.data.message);
+  } catch (err) {
+    // toast.error(err?.data?.message || "Something went wrong");
+    const msg =
+  typeof err?.data?.message === "string"
+    ? err.data.message
+    : err?.data?.message?.message ||
+      "Request Already sent";
 
-// toast.error(msg );
-//   }
-// };
+toast.error(msg );
+  }finally{
+     setLoadingUserId(null);
+  }
+};
 
   const searchCloseHandler = () => {
     dispatch(setIsSearch(false));
@@ -119,8 +124,8 @@ function Search() {
         user={i}
         key={i._id}
         handler={addFriendHandler}
-        handlerIsLoading={isLoading}
-        // handlerIsLoading={isLoadingSendFriendRequest}
+        // handlerIsLoading={isLoading}
+     handlerIsLoading={loadingUserId === i._id}
       />
     ))
   ) : (
