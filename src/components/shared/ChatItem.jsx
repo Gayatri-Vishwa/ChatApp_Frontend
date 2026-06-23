@@ -21,7 +21,7 @@ function ChatItem({
   timer 
 }) {
 const longPress = (e) => {
-  e.preventDefault();
+  // e.preventDefault();
 
   const element = e.currentTarget;
 

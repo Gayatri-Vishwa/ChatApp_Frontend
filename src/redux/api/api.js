@@ -4,7 +4,7 @@ import { server } from "../../components/constants/config";
 const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({ baseUrl: `${server}/api/v1/` }),
-  tagTypes: ["Chat", "User", "Message"],
+  tagTypes: ["Chat", "User", "Message","Notification"],
 
   endpoints: (builder) => ({
     myChats: builder.query({
@@ -30,7 +30,7 @@ const api = createApi({
         credentials: "include",
         body: data,
       }),
-      invalidatesTags: ["User"],
+      invalidatesTags: ["User","Notification"],
     }),
 
     getNotifications: builder.query({
@@ -39,6 +39,7 @@ const api = createApi({
         credentials: "include",
       }),
       keepUnusedDataFor: 0,
+        providesTags: ["Notification"],
     }),
 
     acceptFriendRequest: builder.mutation({
@@ -48,8 +49,9 @@ const api = createApi({
         credentials: "include",
         body: data,
       }),
-      invalidatesTags: ["Chat"],
+      invalidatesTags: ["Chat","Notification"],
     }),
+    
 
     chatDetails: builder.query({
       query: ({ chatId, populate = false }) => {
@@ -191,6 +193,12 @@ getGroupCreator: builder.query({
     credentials: "include",
   }),
 }),
+getUnreadMessages: builder.query({
+  query: () => ({
+    url: "user/unreadmessages",
+    credentials: "include",
+  }),
+}),
 
   }),
 });
@@ -201,7 +209,6 @@ export const {
   useLazySearchUserQuery,
   useSendFriendRequestMutation,
   useGetNotificationsQuery,
-  // useGetNotificationQuery,
   useAcceptFriendRequestMutation,
   useChatDetailsQuery,
   useGetMessagesQuery,
@@ -216,4 +223,5 @@ export const {
   useLeaveGroupMutation,
   useClearChatMutation,
    useGetGroupCreatorQuery,
+   useGetUnreadMessagesQuery,
 } = api;

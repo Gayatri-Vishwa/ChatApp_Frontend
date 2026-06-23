@@ -126,6 +126,14 @@ function Login() {
     }
   };
 
+//   useEffect(() => {
+//   axios.get("/api/v1/notifications")
+//     .then(({ data }) => {
+//       setNotificationCount(data.notifications.length);
+//       setNotifications(data.notifications);
+//     });
+// }, []);
+
   return (
     <div
       style={{

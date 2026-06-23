@@ -11,7 +11,9 @@ import { IconButton } from "@mui/material";
 
 function MessageComponent({ message, user }) {
   const { sender, content, attachments = [], createdAt } = message;
-  const sameSender = sender?._id === user?._id;
+  // Normalize sender id and user id to string for reliable comparison
+  const senderId = sender?._id ?? sender;
+  const sameSender = String(senderId) === String(user?._id);
   const timeAgo = moment(createdAt).fromNow();
 
   return (

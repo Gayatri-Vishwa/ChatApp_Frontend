@@ -1,8 +1,8 @@
+// orignl not to change
 import React, {
   Fragment,
   useCallback,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from "react";
@@ -29,6 +29,7 @@ import {
   useChatDetailsQuery,
   useGetMessagesQuery,
   useGetGroupCreatorQuery,
+  useGetUnreadMessagesQuery
 } from "../redux/api/api";
 import { useErrors, useSocketEvents } from "../Hooks/hook";
 import { useInfiniteScrollTop } from "6pp";
@@ -56,7 +57,8 @@ const Chat = ({ chatId, user }) => {
   const typingTimeout = useRef(null);
 
   const chatDetails = useChatDetailsQuery({ chatId, skip: !chatId });
-  const oldMessagesChunk = useGetMessagesQuery({ chatId, page }, { skip: !chatId });
+
+  const oldMessagesChunk = useGetMessagesQuery({ chatId, page });
 
   const { data: oldMessages, setData: setOldMessages } = useInfiniteScrollTop(
     containerRef,
@@ -65,11 +67,10 @@ const Chat = ({ chatId, user }) => {
     setPage,
     oldMessagesChunk.data?.messages,
   );
-
-  const { data: creatorData } = useGetGroupCreatorQuery(chatId, {
+  const { data: creatorData, isLoading } = useGetGroupCreatorQuery(chatId, {
     skip: !chatId,
   });
-
+// const { data } = useGetUnreadMessagesQuery();
   const errors = [
     { isError: chatDetails.isError, error: chatDetails.error },
     { isError: oldMessagesChunk.isError, error: oldMessagesChunk.error },
@@ -91,7 +92,7 @@ const Chat = ({ chatId, user }) => {
     typingTimeout.current = setTimeout(() => {
       socket.emit(STOP_TYPING, { members, chatId });
       setIamTyping(false);
-    }, 2000);
+    }, [2000]);
   };
 
   const handleFileOpen = (e) => {
@@ -101,16 +102,16 @@ const Chat = ({ chatId, user }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+
     if (!message.trim()) return;
 
+    // Emitting the message to the server
     socket.emit(NEW_MESSAGE, { chatId, members, message });
     setMessage("");
   };
 
   useEffect(() => {
-    if (!chatId || !members?.length) return;
-
-    socket.emit(CHAT_JOINED, { userId: user._id, members, chatId });
+    socket.emit(CHAT_JOINED, { userId: user._id, members });
     dispatch(removeNewMessagesAlert(chatId));
 
     return () => {
@@ -118,46 +119,32 @@ const Chat = ({ chatId, user }) => {
       setMessage("");
       setOldMessages([]);
       setPage(1);
-      socket.emit(CHAT_LEAVED, { userId: user._id, members, chatId });
+      socket.emit(CHAT_LEAVED, { userId: user._id, members });
     };
-  }, [chatId, members, dispatch, setOldMessages, socket, user._id]);
+  }, [chatId]);
 
   useEffect(() => {
-    if (!oldMessagesChunk.data?.messages) return;
-    if (page === 1) {
-      setOldMessages(oldMessagesChunk.data.messages || []);
-      setTimeout(() => {
-        bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-      }, 40);
-    }
-  }, [oldMessagesChunk.data?.messages, page, setOldMessages]);
-
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (bottomRef.current)
+      bottomRef.current.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  useEffect(() => {
+    if (chatDetails.isError) return navigate("/");
+  }, [chatDetails.isError]);
 
   const newMessagesListener = useCallback(
     (data) => {
       if (data.chatId !== chatId) return;
+
       setMessages((prev) => [...prev, data.message]);
     },
     [chatId],
   );
 
-  useEffect(() => {
-    const handler = (e) => {
-      const outgoing = e.detail;
-      if (!outgoing || outgoing.chat !== chatId) return;
-      setMessages((prev) => [...prev, outgoing]);
-    };
-
-    window.addEventListener("local-new-message", handler);
-    return () => window.removeEventListener("local-new-message", handler);
-  }, [chatId]);
-
   const startTypingListener = useCallback(
     (data) => {
       if (data.chatId !== chatId) return;
+
       setUserTyping(true);
     },
     [chatId],
@@ -177,12 +164,13 @@ const Chat = ({ chatId, user }) => {
       const messageForAlert = {
         content: data.message,
         sender: {
-          _id: "system",
-          name: "System",
+          _id: "djasdhajksdhasdsadasdas",
+          name: "Admin",
         },
         chat: chatId,
         createdAt: new Date().toISOString(),
       };
+
       setMessages((prev) => [...prev, messageForAlert]);
     },
     [chatId],
@@ -194,17 +182,25 @@ const Chat = ({ chatId, user }) => {
     [START_TYPING]: startTypingListener,
     [STOP_TYPING]: stopTypingListener,
   };
+  useEffect(() => {
+    if (oldMessagesChunk.data?.messages?.length === 0) {
+      // setOldMessages([]);
+      // setMessages([]);
+    }
+  }, [oldMessagesChunk.data]);
 
   useSocketEvents(socket, eventHandler);
-  useErrors(errors);
 
+  useErrors(errors);
   useEffect(() => {
     if (chatDetails.isError) {
       navigate("/");
     }
-  }, [chatDetails.isError, navigate]);
+  }, [chatDetails.isError]);
 
-  const allMessages = [...(oldMessages || []), ...(messages || [])];
+  const allMessages = [...oldMessages, ...messages];
+
+
 
   return chatDetails.isLoading ? (
     <Skeleton />
@@ -212,6 +208,8 @@ const Chat = ({ chatId, user }) => {
     <Fragment>
       <Stack
         ref={containerRef}
+        // alignItems="flex-start"
+
         boxSizing={"border-box"}
         padding={"1rem"}
         spacing={"1rem"}
@@ -220,6 +218,7 @@ const Chat = ({ chatId, user }) => {
         sx={{
           overflowX: "hidden",
           overflowY: "auto",
+          // minWidth: 0,
         }}
       >
         {group?.groupChat && (
@@ -227,6 +226,7 @@ const Chat = ({ chatId, user }) => {
             <Typography textAlign="center" fontWeight="bold">
               Group - {group?.name}
             </Typography>
+
             <Typography textAlign="center" variant="caption">
               Created by {creatorData?.creator?.name || "Admin"}
             </Typography>
@@ -244,10 +244,13 @@ const Chat = ({ chatId, user }) => {
             No messages yet. Start a conversation 👋
           </Typography>
         )}
+
         {allMessages.map((i) => (
           <MessageComponent key={i._id} message={i} user={user} />
         ))}
+
         {userTyping && <TypingLoader />}
+
         <div ref={bottomRef} />
       </Stack>
 
@@ -274,11 +277,13 @@ const Chat = ({ chatId, user }) => {
           >
             <AttachFileIcon />
           </IconButton>
+
           <InputBox
             placeholder="Type Message Here..."
             value={message}
             onChange={messageOnChange}
           />
+
           <IconButton
             type="submit"
             sx={{
@@ -302,5 +307,4 @@ const Chat = ({ chatId, user }) => {
   );
 };
 
-const WrappedChat = AppLayout()(Chat);
-export default WrappedChat;
+export default AppLayout()(Chat);

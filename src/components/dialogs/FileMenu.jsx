@@ -53,6 +53,19 @@ files.forEach((file)=>myForm.append("files",file))
       if(res.data) toast.success(`${key} send successfully `,{id:toastId})
 
         else toast.error(`Failed to send ${key}`, {id:toastId})
+      // add optimistic local message so sender sees attachments immediately
+      try {
+        if (res?.data?.message) {
+          const serverMsg = res.data.message;
+          const outgoing = {
+            ...serverMsg,
+            _id: `local-${Date.now()}`,
+          };
+          window.dispatchEvent(new CustomEvent("local-new-message", { detail: outgoing }));
+        }
+      } catch (err) {
+        console.warn("Failed to dispatch local-new-message", err);
+      }
   } catch (error) {
     toast.error(error,{id:toastId})
   }finally{

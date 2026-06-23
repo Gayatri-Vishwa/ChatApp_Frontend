@@ -27,19 +27,15 @@ const chatSlice = createSlice({
     },
 
     setNewMessagesAlert: (state, action) => {
-      const chatId = action.payload.chatId;
+      const { chatId, count } = action.payload;
 
-      const index = state.newMessagesAlert.findIndex(
-        (item) => item.chatId === chatId
-      );
+      const index = state.newMessagesAlert.findIndex((item) => item.chatId === chatId);
 
       if (index !== -1) {
-        state.newMessagesAlert[index].count += 1;
+        if (typeof count === "number") state.newMessagesAlert[index].count = count;
+        else state.newMessagesAlert[index].count += 1;
       } else {
-        state.newMessagesAlert.push({
-          chatId,
-          count: 1,
-        });
+        state.newMessagesAlert.push({ chatId, count: typeof count === "number" ? count : 1 });
       }
     },
 

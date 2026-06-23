@@ -1,4 +1,7 @@
 
-export const server= import.meta.env.VITE_SERVER
+const localServer = "http://localhost:3000";
+const envServer = import.meta.env.VITE_SERVER?.replace(/\/$/, "");
 
-//fix alert listener ,add refetch listener ,
+export const server = import.meta.env.MODE === "development" ? localServer : envServer || localServer;
+
+// fix alert listener ,add refetch listener ,

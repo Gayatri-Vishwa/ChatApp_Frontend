@@ -1,9 +1,138 @@
+// //orignl
+
+// import React, { memo } from "react";
+// import {
+//   Button,
+//   Dialog,
+//   DialogTitle,
+//   InputAdornment,
+//   ListItem,
+//   Stack,
+//   Avatar,
+//   Typography,
+//   Skeleton,
+// } from "@mui/material";
+// import {
+//   useAcceptFriendRequestMutation,
+//   useGetNotificationsQuery,
+// } from "../../redux/api/api";
+// import { useErrors } from "../../Hooks/hook";
+// import { useDispatch, useSelector } from "react-redux";
+// import { setIsNotification } from "../../redux/reducers/misc";
+
+// import toast from "react-hot-toast";
+// function Notifications() {
+
+//   const { isNotification } = useSelector((state) => state.misc);
+//   const dispatch = useDispatch();
+//   const { isLoading, data, error, refetch, isError } =useGetNotificationsQuery();
+
+//   const [acceptRequest] = useAcceptFriendRequestMutation();
+
+//   const friendRequestHandler = async ({ _id, accept }) => {
+//     try {
+//       const res = await acceptRequest({ requestId: _id, action: accept });
+//       if (res?.data?.success) {
+//         toast.success(res.data.message);
+//         dispatch(setIsNotification(false));
+//       } else {
+//         toast.error(res?.data?.error || "something went wrong");
+//       }
+//     } catch (error) {
+//       toast.error(error.message || "something went wrong");
+//       console.log(error);
+//     }
+//   };
+
+//   const onCloseHandler = () => {
+//     dispatch(setIsNotification(false));
+//   };
+// // const onCloseHandler = async () => {
+
+// //   await markNotificationsRead();
+
+// //   dispatch(setIsNotification(false));
+// // };
+
+  
+//   useErrors([{ error, isError }]);
+
+//   return (
+//     <Dialog open={isNotification} onClose={onCloseHandler}>
+//       <Stack p={{ xs: "1rem", sm: "2rem" }} maxWidth={"25rem"}>
+//         <DialogTitle>Notifications</DialogTitle>
+
+//         {isLoading ? (
+//           <Skeleton />
+//         ) : (
+//           <>
+//             {data?.allRequests.length > 0 ? (
+//               data?.allRequests.map(({ sender, _id }) => (
+//                 <NotificationItem
+//                   sender={sender}
+//                   _id={_id}
+//                   handler={friendRequestHandler}
+//                   key={_id}
+//                 />
+//               ))
+//             ) : (
+//               <Typography textAlign={"center"}>No notification</Typography>
+//             )}
+//           </>
+//         )}
+//       </Stack>
+//     </Dialog>
+//   );
+// }
+
+// const NotificationItem = memo(({ sender, _id, handler }) => {
+//   const { name, avatar } = sender;
+//   return (
+//     <ListItem>
+//       <Stack
+//         direction={"row"}
+//         alignItems={"center"}
+//         spacing={"1rem"}
+//         width={"100%"}
+//       >
+//         <Avatar src={avatar} />
+//         <Typography
+//           sx={{
+//             flexGrow: 1,
+//             display: "-webkit-box",
+//             WebkitLineClamp: 1,
+//             WebkitBoxOrient: "vertical",
+//             overflow: "hidden",
+//             width: "100%",
+//             textOverflow: "ellipsis",
+//           }}
+//         >{`${name} sent you a friend request`}</Typography>
+//         <Stack
+//           direction={{
+//             xs: "column",
+//             sm: "row",
+//           }}
+//         >
+//           <Button onClick={() => handler({ _id, accept: true })}>Accept</Button>
+//           <Button color="error" onClick={() => handler({ _id, accept: false })}>
+//             Reject
+//           </Button>
+          
+//         </Stack>
+
+//       </Stack>
+//     </ListItem>
+//   );
+// });
+
+// export default Notifications;
+
+// ============================================================
 import React, { memo } from "react";
 import {
   Button,
   Dialog,
   DialogTitle,
-  InputAdornment,
   ListItem,
   Stack,
   Avatar,
@@ -17,14 +146,15 @@ import {
 import { useErrors } from "../../Hooks/hook";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsNotification } from "../../redux/reducers/misc";
-
 import toast from "react-hot-toast";
+
 function Notifications() {
   const { isNotification } = useSelector((state) => state.misc);
   const dispatch = useDispatch();
-  const { isLoading, data, error, refetch, isError } =useGetNotificationsQuery();
-
+  const { isLoading, data, error, isError } = useGetNotificationsQuery();
   const [acceptRequest] = useAcceptFriendRequestMutation();
+
+  const friendRequests = data?.allRequests || [];
 
   const friendRequestHandler = async ({ _id, accept }) => {
     try {
@@ -33,10 +163,10 @@ function Notifications() {
         toast.success(res.data.message);
         dispatch(setIsNotification(false));
       } else {
-        toast.error(res?.data?.error || "something went wrong");
+        toast.error(res?.error?.data?.message || "Something went wrong");
       }
     } catch (error) {
-      toast.error(error.message || "something went wrong");
+      toast.error(error.message || "Something went wrong");
       console.log(error);
     }
   };
@@ -56,8 +186,8 @@ function Notifications() {
           <Skeleton />
         ) : (
           <>
-            {data?.allRequests.length > 0 ? (
-              data?.allRequests.map(({ sender, _id }) => (
+            {friendRequests.length > 0 ? (
+              friendRequests.map(({ sender, _id }) => (
                 <NotificationItem
                   sender={sender}
                   _id={_id}
@@ -66,7 +196,7 @@ function Notifications() {
                 />
               ))
             ) : (
-              <Typography textAlign={"center"}>No notification</Typography>
+              <Typography textAlign={"center"}>No notifications</Typography>
             )}
           </>
         )}
@@ -76,14 +206,14 @@ function Notifications() {
 }
 
 const NotificationItem = memo(({ sender, _id, handler }) => {
-  const { name, avatar } = sender;
+  const { name, avatar } = sender || {};
   return (
     <ListItem>
       <Stack
-        direction={"row"}
-        alignItems={"center"}
-        spacing={"1rem"}
-        width={"100%"}
+        direction="row"
+        alignItems="center"
+        spacing="1rem"
+        width="100%"
       >
         <Avatar src={avatar} />
         <Typography
@@ -96,7 +226,7 @@ const NotificationItem = memo(({ sender, _id, handler }) => {
             width: "100%",
             textOverflow: "ellipsis",
           }}
-        >{`${name} sent you a friend request`}</Typography>
+        >{`${name || "Someone"} sent you a friend request`}</Typography>
         <Stack
           direction={{
             xs: "column",
@@ -114,4 +244,5 @@ const NotificationItem = memo(({ sender, _id, handler }) => {
 });
 
 export default Notifications;
+
 

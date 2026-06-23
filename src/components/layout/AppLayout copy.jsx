@@ -8,11 +8,10 @@ import {
   NEW_REQUEST,
   ONLINE_USERS,
   REFETCH_CHATS,
-  REQUEST_UNREAD_ALERTS,
 } from "../constants/events";
 import { useErrors, useSocketEvents } from "../../Hooks/hook";
 import { getOrSaveFromStorage } from "../../lib/featues";
-import { useMyChatsQuery, useGetUnreadMessagesQuery } from "../../redux/api/api";
+import { useMyChatsQuery } from "../../redux/api/api";
 import {
   incrementNotification,
   setNewMessagesAlert,
@@ -51,6 +50,7 @@ const AppLayout = () => (WrappedComponent) => {
     useErrors([{ isError, error }]);
 
     useEffect(() => {
+      
       getOrSaveFromStorage({ key: NEW_MESSAGE_ALERT, value: newMessagesAlert });
     }, [newMessagesAlert]);
 
@@ -66,60 +66,12 @@ const AppLayout = () => (WrappedComponent) => {
 
     const newMessageAlertListener = useCallback(
       (data) => {
-        console.log("NEW_MESSAGE_ALERT received in AppLayout:", data);
-        const cid = String(data.chatId);
-        if (chatId && cid === chatId) return;
-        dispatch(setNewMessagesAlert({ chatId: cid, count: Number(data.count) || 1 }));
-  //       dispatch(  setNewMessagesAlert(prev => ({
-  //   ...prev,
-  //   [chatId]: (prev[chatId] || 1) + 1
-  // })));
-
+        // if (data.chatId === chatId) return;
+        if (chatId && data.chatId === chatId) return;
+        dispatch(setNewMessagesAlert(data));
       },
       [chatId],
     );
-// socket.on(NEW_MESSAGE_ALERT, ({ chatId }) => {
-//   setNewMessagesAlert(prev => ({
-//     ...prev,
-//     [chatId]: (prev[chatId] || 0) + 1
-//   }));
-// });
-
-
-
-    
-    // Fetch unread counts from API once on load (covers missed socket emits)
-    const { data: unreadData } = useGetUnreadMessagesQuery(undefined, { skip: !user });
-
-    useEffect(() => {
-      if (!unreadData?.notifications) return;
-      console.log("unreadData from API:", unreadData);
-      unreadData.notifications.forEach((n) => {
-        dispatch(setNewMessagesAlert({ chatId: String(n._id), count: Number(n.count) || 1 }));
-      });
-    }, [unreadData]);
-
-    useEffect(() => {
-      if (!socket || !user) return;
-
-      const handleConnect = () => {
-        try {
-          socket.emit(REQUEST_UNREAD_ALERTS);
-          console.log("AppLayout requested unread alerts from socket on connect");
-        } catch (err) {
-          console.warn("Failed to request unread alerts from socket on connect", err);
-        }
-      };
-
-      socket.on("connect", handleConnect);
-      if (socket.connected) {
-        handleConnect();
-      }
-
-      return () => {
-        socket.off("connect", handleConnect);
-      };
-    }, [socket, user]);
 
     const newRequestListener = useCallback(() => {
       dispatch(incrementNotification());
@@ -143,22 +95,14 @@ const AppLayout = () => (WrappedComponent) => {
 
     useSocketEvents(socket, eventHandlers);
 
-    // Ask server for any stored unread alerts after handlers are registered
-    useEffect(() => {
-      if (!socket) return;
-      try {
-        socket.emit(REQUEST_UNREAD_ALERTS);
-        console.log("Requested unread alerts from server");
-      } catch (err) {
-        console.warn("Failed to request unread alerts", err);
-      }
-    }, [socket]);
-
     useEffect(() => {
       if (user) {
         refetch();
       }
     }, [user]);
+
+
+
 
     return (
       <>

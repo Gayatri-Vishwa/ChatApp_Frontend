@@ -1,4 +1,4 @@
-
+//orignl
 
 import {
   AppBar,
@@ -37,8 +37,6 @@ import { resetNotificationCount } from "../../redux/reducers/chat";
 const SearchDialog = lazy(() => import("../specific/Search"));
 const NotifcationDialog = lazy(() => import("../specific/Notifications"));
 const NewGroupDialog = lazy(() => import("../specific/NewGroup"));
-import { useGetNotificationsQuery } from "../../redux/api/api";
-
 
 const Header = () => {
   const navigate = useNavigate();
@@ -47,13 +45,7 @@ const Header = () => {
   const { isSearch, isNotification, isNewGroup } = useSelector(
     (state) => state.misc
   );
-  // const { notificationCount } = useSelector((state) => state.chat);
-  const { data } = useGetNotificationsQuery();
-
-const notificationCount =
-  (data?.allRequests?.length || 0) +
-  (data?.notifications?.length || 0);
-
+  const { notificationCount } = useSelector((state) => state.chat);
 
   const handleMobile = () => dispatch(  setIsMobileMenu(true));
 

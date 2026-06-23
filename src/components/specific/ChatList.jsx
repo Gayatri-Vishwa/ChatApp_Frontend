@@ -32,8 +32,8 @@ export default function ChatList({
         
         const { avatar, _id, name, groupChat, members } = data;
 
-        const newMessageAlert = newMessagesAlert.find(
-          ({ chatId }) => chatId === _id,
+        const newMessageAlert = newMessagesAlert.find(({ chatId }) =>
+          String(chatId) === String(_id),
         );
         const isOnline = members?.some((member) => onlineUsers.includes(member));
         // const isOnline = members?.some((member) => onlineUsers.includes(_id));
