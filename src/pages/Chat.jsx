@@ -144,16 +144,16 @@ const Chat = ({ chatId, user }) => {
     [chatId],
   );
 
-  useEffect(() => {
-    const handler = (e) => {
-      const outgoing = e.detail;
-      if (!outgoing || outgoing.chat !== chatId) return;
-      setMessages((prev) => [...prev, outgoing]);
-    };
+  // useEffect(() => {
+  //   const handler = (e) => {
+  //     const outgoing = e.detail;
+  //     if (!outgoing || outgoing.chat !== chatId) return;
+  //     setMessages((prev) => [...prev, outgoing]);
+  //   };
 
-    window.addEventListener("local-new-message", handler);
-    return () => window.removeEventListener("local-new-message", handler);
-  }, [chatId]);
+  //   window.addEventListener("local-new-message", handler);
+  //   return () => window.removeEventListener("local-new-message", handler);
+  // }, [chatId]);
 
   const startTypingListener = useCallback(
     (data) => {
