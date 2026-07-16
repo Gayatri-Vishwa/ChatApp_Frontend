@@ -1,12 +1,70 @@
-# React + Vite
+# 💬 Chat App - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern real-time chat application built with **React.js** that enables users to communicate instantly through a clean, responsive, and user-friendly interface. The application supports secure authentication, protected routes, and real-time messaging powered by Socket.IO.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+* 🔐 User Registration & Login
+* 💬 Real-Time One-to-One Messaging
+* ⚡ Instant Message Updates with Socket.IO
+* 🛡️ JWT Authentication
+* 🔒 Protected Routes
+* 📱 Fully Responsive Design
+* 🎨 Modern User Interface
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🛠️ Tech Stack
+
+* React.js
+* Tailwind CSS
+* React Router DOM
+* Axios
+* Socket.IO Client
+
+---
+
+## 📦 Installation
+
+```bash
+git clone https://github.com/Gayatri-Vishwa/ChatApp_Frontend.git
+cd ChatApp_Frontend
+npm install
+npm run dev
+```
+
+---
+
+## 🔑 Environment Variables
+
+Create a `.env` file in the project root and add:
+
+```env
+VITE_API_URL=https://chatapp-backend-6fqf.onrender.com
+```
+
+---
+
+## 🌐 Live Demo
+
+**Frontend:** https://chat-app-frontend-dsux.vercel.app
+
+---
+
+## 🔗 Backend Repository
+
+https://github.com/Gayatri-Vishwa/ChatApp_Backend
+
+---
+
+
+---
+
+## 👩‍💻 Author
+
+**Gayatri Vishwakarma**
+
+* Portfolio: https://portfolio-azure-gayatri.vercel.app/
+* GitHub: https://github.com/Gayatri-Vishwa
