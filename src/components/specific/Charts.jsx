@@ -52,7 +52,7 @@ const lineChartOptions = {
 };
 
 
-/////////////         charts 
+//     charts 
 const LineChart = ({value=[]}) => {
   const data = {
     labels,

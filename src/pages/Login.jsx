@@ -70,13 +70,13 @@ function Login() {
       toast.success(data.message, { id: toastId });
     } catch (err) {
       // toast.error(error.response?.data?.message || "Login failed",{id:toastId});
-        console.log("ERROR:", err.response?.data);
-     const msg =
-    typeof err?.response?.data?.message === "string"
-      ? err.response.data.message
-      : err?.response?.data?.message?.message || "Login Failed";
+      console.log("ERROR:", err.response?.data);
+      const msg =
+        typeof err?.response?.data?.message === "string"
+          ? err.response.data.message
+          : err?.response?.data?.message?.message || "Login Failed";
 
-  toast.error(msg,{id:toastId});
+      toast.error(msg, { id: toastId });
     } finally {
       setIsLoading(false);
     }
@@ -116,23 +116,15 @@ function Login() {
       console.log(err);
       // toast.error(error.response?.data?.message || "Signup failed",{id:toastId});
       const msg =
-    typeof err?.response?.data?.message === "string"
-      ? err.response.data.message
-      : err?.response?.data?.message?.message || "SignUp Failed";
+        typeof err?.response?.data?.message === "string"
+          ? err.response.data.message
+          : err?.response?.data?.message?.message || "SignUp Failed";
 
-  toast.error(msg,{id:toastId});
+      toast.error(msg, { id: toastId });
     } finally {
       setIsLoading(false);
     }
   };
-
-//   useEffect(() => {
-//   axios.get("/api/v1/notifications")
-//     .then(({ data }) => {
-//       setNotificationCount(data.notifications.length);
-//       setNotifications(data.notifications);
-//     });
-// }, []);
 
   return (
     <div

@@ -30,10 +30,6 @@ import { server } from "../../components/constants/config";
 import { useErrors } from "../../Hooks/hook";
 
 const Dashboard = () => {
-  // const { loading, data, error } = useFetchData(
-  //   `${server}/api/v1/admin/stats`,
-  //   "dashboard-stats"
-  // );
 
    const { loading, data, error } = useFetchData({
       url: `${server}/api/v1/admin/stats`,

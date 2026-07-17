@@ -29,9 +29,7 @@ import {BouncingSkeleton} from '../../components/styles/StyledComponents'
           size={{ md: 4, lg: 3 }}
           display={{ xs: "none", md: "block" }}
           height={"100%"}
-          // sx={{padding:"2rem",
-          //     bgcolor:"rgba(0,0,0,0.85)"
-          // }}
+         
         >
           <Skeleton variant="rectangular" width={""} height={"100vh"} />
         </Grid>

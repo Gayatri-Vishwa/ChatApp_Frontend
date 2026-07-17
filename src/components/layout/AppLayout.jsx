@@ -70,21 +70,10 @@ const AppLayout = () => (WrappedComponent) => {
         const cid = String(data.chatId);
         if (chatId && cid === chatId) return;
         dispatch(setNewMessagesAlert({ chatId: cid, count: Number(data.count) || 1 }));
-  //       dispatch(  setNewMessagesAlert(prev => ({
-  //   ...prev,
-  //   [chatId]: (prev[chatId] || 1) + 1
-  // })));
 
       },
       [chatId],
     );
-// socket.on(NEW_MESSAGE_ALERT, ({ chatId }) => {
-//   setNewMessagesAlert(prev => ({
-//     ...prev,
-//     [chatId]: (prev[chatId] || 0) + 1
-//   }));
-// });
-
 
 
     
@@ -226,8 +215,7 @@ const AppLayout = () => (WrappedComponent) => {
             height="100%"
             sx={{ flex: 1, minWidth: 0 }}
           >
-            {/* <Grid item xs={12} sm={8} md={5} lg={6} height={"100%"}> */}
-            {/* <Grid item xs={12} sm={8} md={4} lg={4} height="100%"> */}
+         
             <WrappedComponent {...props} chatId={chatId} user={user} />
           </Grid>
 

@@ -65,11 +65,4 @@ function UserItem({ user, handler, handlerIsLoading, isAdded, styling = {} }) {
 
 export default memo(UserItem);
 
-{
-  /* <Button
-  onClick={() => handler(user._id)}
-  disabled={handlerIsLoading}
->
-  {handlerIsLoading ? "Sending..." : "Add Friend"}
-</Button> */
-}
+

@@ -28,8 +28,6 @@ const DeleteChatMenu = ({ dispatch, deleteMenuAnchor }) => {
     useDeleteChatMutation,
   );
 
-//   const [clearChat, ___, clearChatData] =
-//     useAsyncMutation(useClearChatMutation);
 
     const [clearChat, ___,clearChatData] = useAsyncMutation(useClearChatMutation);
 

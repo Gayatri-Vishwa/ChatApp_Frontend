@@ -25,7 +25,7 @@ export default function ChatList({
     
   return (
     <Stack width={w} direction={"column"} overflow={"auto"} height={"100%"}   sx={{
-    overflowX: "hidden",   // ✅ IMPORTANT
+    overflowX: "hidden",   //  IMPORTANT
     maxWidth: "100%",
   }}>
       {chats?.map((data, index) => {
@@ -51,7 +51,7 @@ export default function ChatList({
             groupChat={groupChat}
             sameSender={chatId === _id}
             handleDeleteChat={handleDeleteChat}
-              timer={timer}     // 👈 ye add karo
+              timer={timer}     //  ye add karo
             // key={chatId} 
           />
         );

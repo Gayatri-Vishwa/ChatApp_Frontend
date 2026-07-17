@@ -74,11 +74,6 @@ const columns = [
 ];
 
 const ChatManagement = () => {
-  // const { loading, data, error } = useFetchData(
-  //   `${server}/api/v1/admin/chats`,
-  //   "dashboard-chats"
-  // );
-
 
   
   const { loading, data, error } = useFetchData({

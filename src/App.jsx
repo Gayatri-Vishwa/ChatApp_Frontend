@@ -29,24 +29,13 @@ function App() {
 const {user,loader}=useSelector((state)=>state.auth)
  
 
-//   useEffect(() => {
-//   axios
-//     .get(`${server}/api/v1/user/me`)
-//     .then((res) =>   dispatch(userExists(res.data.user)))
-//     .catch((err) => {
-//       console.log("error",err.response?.data);
-//       dispatch(userNotExists());
-      
-//     });
-// }, [dispatch]);
-
 
 useEffect(() => {
   axios
     .get(`${server}/api/v1/user/me`, {
       withCredentials: true,
     })
-    // .then((res) => dispatch(userExists(res.user)))
+   
     .then((res) => dispatch(userExists(res.data.data)))
     .catch(() => dispatch(userNotExists()));
 }, [dispatch]);

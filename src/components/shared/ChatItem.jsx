@@ -1,4 +1,4 @@
-// ===============trail= but best================
+
 import React, { memo } from "react";
 import { Link } from "../styles/StyledComponents";
 import { Stack, Typography, Box } from "@mui/material";
@@ -84,7 +84,7 @@ const longPress = (e) => {
               fontWeight={600}
               sx={{
                 whiteSpace: "normal",
-                overflowWrap: "anywhere", // 🔥 important
+                overflowWrap: "anywhere", //  important
                 wordBreak: "break-word",
               }}
             >
