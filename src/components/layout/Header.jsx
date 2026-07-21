@@ -1,5 +1,3 @@
-
-
 import {
   AppBar,
   Backdrop,
@@ -39,23 +37,20 @@ const NotifcationDialog = lazy(() => import("../specific/Notifications"));
 const NewGroupDialog = lazy(() => import("../specific/NewGroup"));
 import { useGetNotificationsQuery } from "../../redux/api/api";
 
-
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { isSearch, isNotification, isNewGroup } = useSelector(
-    (state) => state.misc
+    (state) => state.misc,
   );
   // const { notificationCount } = useSelector((state) => state.chat);
   const { data } = useGetNotificationsQuery();
 
-const notificationCount =
-  (data?.allRequests?.length || 0) +
-  (data?.notifications?.length || 0);
+  const notificationCount =
+    (data?.allRequests?.length || 0) + (data?.notifications?.length || 0);
 
-
-  const handleMobile = () => dispatch(  setIsMobileMenu(true));
+  const handleMobile = () => dispatch(setIsMobileMenu(true));
 
   const openSearch = () => dispatch(setIsSearch(true));
 
@@ -88,14 +83,25 @@ const notificationCount =
         <AppBar
           position="static"
           sx={{
-            bgcolor: orange,
+            bgcolor: "#1A1D29",
+            height: 68,
+            borderBottom: "1px solid rgba(255,255,255,0.08)",
+            boxShadow: "0 8px 24px rgba(0,0,0,0.35)",
           }}
         >
-          <Toolbar>
+          <Toolbar
+            sx={{
+              minHeight: "68px !important",
+              px: 3,
+            }}
+          >
             <Typography
-              variant="h6"
+              variant="h5"
               sx={{
                 display: { xs: "none", sm: "block" },
+                fontWeight: 700,
+                letterSpacing: "1px",
+                color: "#fff",
               }}
             >
               Chattu
@@ -106,7 +112,21 @@ const notificationCount =
                 display: { xs: "block", sm: "none" },
               }}
             >
-              <IconButton color="inherit" onClick={handleMobile}>
+              {/* <IconButton color="inherit" onClick={handleMobile}> */}
+              <IconButton
+                onClick={handleMobile}
+                sx={{
+                  color: "#C7CAD1",
+                  ml: 0.5,
+                  borderRadius: "12px",
+                  transition: "all .25s ease",
+                  "&:hover": {
+                    bgcolor: "#2A2E3F",
+                    color: "#5CCBFF",
+                    transform: "translateY(-2px)",
+                  },
+                }}
+              >
                 <MenuIcon />
               </IconButton>
             </Box>
@@ -189,5 +209,3 @@ const IconBtn = ({ title, icon, onClick, value }) => {
 };
 
 export default Header;
-
-

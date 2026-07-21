@@ -1,4 +1,3 @@
-
 import React, { memo } from "react";
 import { Link } from "../styles/StyledComponents";
 import { Stack, Typography, Box } from "@mui/material";
@@ -6,7 +5,6 @@ import AvatarCard from "./AvatarCard";
 import { motion } from "framer-motion";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { IconButton } from "@mui/material";
-
 
 function ChatItem({
   avatar = [],
@@ -18,36 +16,36 @@ function ChatItem({
   index = 0,
   newMessageAlert,
   handleDeleteChat,
-  timer 
+  timer,
 }) {
-const longPress = (e) => {
-  // e.preventDefault();
+  const longPress = (e) => {
+    // e.preventDefault();
 
-  const element = e.currentTarget;
+    const element = e.currentTarget;
 
-  timer.current = setTimeout(() => {
-    handleDeleteChat(element, _id, groupChat);
-  }, 700);
-};
+    timer.current = setTimeout(() => {
+      handleDeleteChat(element, _id, groupChat);
+    }, 700);
+  };
   return (
-<Link
-  to={`/chat/${_id}`}
-  onContextMenu={(e) => {
-    e.preventDefault();
-    handleDeleteChat(e.currentTarget, _id, groupChat);
-  }}
-  onTouchStart={longPress}
-  onTouchEnd={() => clearTimeout(timer.current)}
-  onTouchMove={() => clearTimeout(timer.current)}
-  sx={{
-    padding: 0,
-    textDecoration: "none",
-    display: "block",
-    width: "100%",
-    maxWidth: "100%",
-    boxSizing: "border-box",
-  }}
->
+    <Link
+      to={`/chat/${_id}`}
+      onContextMenu={(e) => {
+        e.preventDefault();
+        handleDeleteChat(e.currentTarget, _id, groupChat);
+      }}
+      onTouchStart={longPress}
+      onTouchEnd={() => clearTimeout(timer.current)}
+      onTouchMove={() => clearTimeout(timer.current)}
+      sx={{
+        padding: 0,
+        textDecoration: "none",
+        display: "block",
+        width: "100%",
+        maxWidth: "100%",
+        boxSizing: "border-box",
+      }}
+    >
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -58,20 +56,24 @@ const longPress = (e) => {
           sx={{
             display: "flex",
             alignItems: "center",
-            justifyContent: "space-between",
-            p: 1.5,
             gap: 2,
-            borderRadius: 2,
+            p: 1.8,
+            mb: 1,
+            borderRadius: "14px",
             width: "100%",
             cursor: "pointer",
-            transition: "0.2s ease",
+            transition: "all .25s ease",
 
-            bgcolor: sameSender ? "#111" : "white",
-            color: sameSender ? "white" : "black",
+            bgcolor: sameSender ? "#2F80ED" : "#232533",
+            color: "#FFFFFF",
+
+            border: sameSender
+              ? "1px solid #5CA9FF"
+              : "1px solid rgba(255,255,255,0.06)",
 
             "&:hover": {
-              transform: "scale(1.02)",
-              backgroundColor: sameSender ? "#000" : "#f5f5f5",
+              bgcolor: sameSender ? "#3A8DFF" : "#2C3040",
+              transform: "translateY(-2px)",
             },
           }}
         >
@@ -81,12 +83,16 @@ const longPress = (e) => {
           {/* Name + Message */}
           <Stack sx={{ flex: 1, minWidth: 0 }}>
             <Typography
-              fontWeight={600}
+             
               sx={{
-                whiteSpace: "normal",
-                overflowWrap: "anywhere", //  important
-                wordBreak: "break-word",
+                fontWeight: 600,
+                fontSize: "15px",
+                color: "#FFFFFF",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
               }}
+           
             >
               {name}
             </Typography>
@@ -141,24 +147,9 @@ const longPress = (e) => {
             </Box>
           )}
         </Box>
-        {/* <IconButton
-  onClick={(e) => {
-    deleteMenuAnchor.current = e.currentTarget;
-
-    dispatch(
-      setIsDeleteMenu({
-        chatId: chat._id,
-        groupChat: chat.groupChat,
-      })
-    );
-  }}
->
-  <MoreVertIcon />
-</IconButton> */}
       </motion.div>
     </Link>
   );
 }
 
 export default memo(ChatItem);
-

@@ -24,10 +24,23 @@ export default function ChatList({
 
     
   return (
-    <Stack width={w} direction={"column"} overflow={"auto"} height={"100%"}   sx={{
-    overflowX: "hidden",   //  IMPORTANT
+  //   <Stack width={w} direction={"column"} overflow={"auto"} height={"100%"}   sx={{
+  //   overflowX: "hidden",   //  IMPORTANT
+  //   maxWidth: "100%",
+  // }}>
+  <Stack
+  width={w}
+  direction="column"
+  height="100%"
+  sx={{
+    overflowY: "auto",
+    overflowX: "hidden",
     maxWidth: "100%",
-  }}>
+    px: 1.2,
+    py: 1,
+    bgcolor: "#181A24",
+  }}
+>
       {chats?.map((data, index) => {
         
         const { avatar, _id, name, groupChat, members } = data;
