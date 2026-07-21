@@ -129,13 +129,17 @@ function Login() {
   return (
     <div
       style={{
-        backgroundImage: bgGradient,
-
+        // backgroundImage: bgGradient,
         minHeight: "100vh",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         padding: "2rem 0", // space for scroll
+
+        backgroundColor: "rgba(35,37,51,0.95)",
+        backdropFilter: "blur(10px)",
+        border: "1px solid rgba(255,255,255,0.08)",
+        color: "#fff",
       }}
     >
       <Container
@@ -161,20 +165,28 @@ function Login() {
             justifyContent: "center",
             width: "100%",
             borderRadius: "16px",
-            backgroundColor: "rgba(255, 255, 255, 0.92)",
+            // backgroundColor: "rgba(255, 255, 255, 0.92)",
+            // backdropFilter: "blur(10px)",
+            backgroundColor: "#232533",
             backdropFilter: "blur(10px)",
+            border: "1px solid rgba(255,255,255,0.08)",
+            color: "#fff",
           }}
         >
           {isLogin ? (
             <>
               <Typography
                 variant="h5"
-                textAlign={"center"}
+                textAlign="center"
                 m="1rem"
-                color="primary"
+                sx={{
+                  color: "#fff",
+                  fontWeight: 700,
+                }}
               >
                 Login Form
               </Typography>
+
               <form
                 style={{
                   width: "100%",
@@ -195,6 +207,7 @@ function Login() {
                   variant="outlined"
                   value={username.value}
                   onChange={username.changeHandler}
+                  sx={darkTextField}
                 />
 
                 <TextField
@@ -206,20 +219,31 @@ function Login() {
                   variant="outlined"
                   value={password.value}
                   onChange={password.changeHandler}
+                      sx={darkTextField}
                 />
 
+            
                 <Button
-                  type="submit"
+                 type="submit"
                   fullWidth
                   variant="contained"
                   color="primary"
                   disabled={isLoading}
+                  sx={{
+                    bgcolor: "#2F80ED",
+                    borderRadius: "10px",
+                    fontWeight: 600,
+                 
+                    "&:hover": {
+                      bgcolor: "#5CA9FF",
+                    },
+                  }}
                 >
-                  {" "}
+                   {" "}
                   Login{" "}
                 </Button>
 
-                <Typography> OR</Typography>
+                <Typography color="rgba(255,255,255,0.6)">OR</Typography>
 
                 <Button
                   fullWidth
@@ -291,6 +315,7 @@ function Login() {
                 </Stack>
 
                 <TextField
+                sx={darkTextField}
                   required
                   fullWidth
                   label="Name"
@@ -300,6 +325,7 @@ function Login() {
                   onChange={name.changeHandler}
                 />
                 <TextField
+                sx={darkTextField}
                   required
                   fullWidth
                   label="Bio"
@@ -309,6 +335,7 @@ function Login() {
                   onChange={bio.changeHandler}
                 />
                 <TextField
+                sx={darkTextField}
                   required
                   fullWidth
                   label="Username"
@@ -325,6 +352,7 @@ function Login() {
                 )}
 
                 <TextField
+                sx={darkTextField}
                   required
                   fullWidth
                   label="Password"
@@ -371,3 +399,23 @@ function Login() {
 }
 
 export default Login;
+
+
+const darkTextField = {
+  "& .MuiOutlinedInput-root": {
+    color: "#fff",
+    "& fieldset": {
+      borderColor: "rgba(255,255,255,0.3)",
+    },
+    "&:hover fieldset": {
+      borderColor: "#2F80ED",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "#5CA9FF",
+    },
+  },
+
+  "& .MuiInputLabel-root": {
+    color: "rgba(255,255,255,0.7)",
+  },
+};

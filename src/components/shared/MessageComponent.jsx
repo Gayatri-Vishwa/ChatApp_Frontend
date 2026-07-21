@@ -1,19 +1,88 @@
+// import { Box, Typography } from "@mui/material";
+// import React, { memo } from "react";
+// import { lightBlue } from "../constants/Color.js";
+// import moment from "moment";
+// import { fileFormat } from "../../lib/featues";
+// import RenderAttachments from "./RenderAttachments";
+// import RenderAttachment from "./RenderAttachments";
+// import { motion } from "framer-motion";
+// import { Link } from "react-router-dom";
+// import { IconButton } from "@mui/material";
+
+// function MessageComponent({ message, user }) {
+//   const { sender, content, attachments = [], createdAt } = message;
+//   // Normalize sender id and user id to string for reliable comparison
+//   const senderId = sender?._id ?? sender;
+//   const sameSender = String(senderId) === String(user?._id);
+//   const timeAgo = moment(createdAt).fromNow();
+
+//   return (
+//     <motion.div
+//       initial={{ opacity: 0, x: "-100%" }}
+//       whileInView={{ opacity: 1, x: 0 }}
+//       style={{
+//         alignSelf: sameSender ? "flex-end" : "flex-start",
+//         backgroundColor: "white",
+//         borderRadius: "8px",
+//         padding: "8px",
+//         maxWidth: "60%",
+//         width: "fit-content",
+//         wordBreak: "break-word",
+//       }}
+//     >
+//       {!sameSender && (
+//         <Typography color={lightBlue} fontWeight={"600"} variant="caption">
+//           {sender.name}
+//         </Typography>
+//       )}
+
+//       {content && <Typography>{content}</Typography>}
+
+//       {attachments.length > 0 &&
+//         attachments.map((attachment, index) => {
+//           const url = attachment.url;
+//           const file = fileFormat(url);
+
+//           return (
+//             <Box key={index}>
+//               <a
+//                 href={url}
+//                 target="_blank"
+//                 download
+//                 style={{
+//                   color: "black",
+//                 }}
+//               >
+//                 <RenderAttachments file={file} url={url} />
+//               </a>
+//             </Box>
+//           );
+//         })}
+
+//       <Typography variant="caption" color={"text.secondary"}>
+//         {timeAgo}
+//       </Typography>
+//     </motion.div>
+//   );
+// }
+
+// export default memo(MessageComponent);
+
+
 import { Box, Typography } from "@mui/material";
 import React, { memo } from "react";
 import { lightBlue } from "../constants/Color.js";
 import moment from "moment";
 import { fileFormat } from "../../lib/featues";
 import RenderAttachments from "./RenderAttachments";
-import RenderAttachment from "./RenderAttachments";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { IconButton } from "@mui/material";
 
 function MessageComponent({ message, user }) {
   const { sender, content, attachments = [], createdAt } = message;
-  // Normalize sender id and user id to string for reliable comparison
+
   const senderId = sender?._id ?? sender;
   const sameSender = String(senderId) === String(user?._id);
+
   const timeAgo = moment(createdAt).fromNow();
 
   return (
@@ -22,24 +91,49 @@ function MessageComponent({ message, user }) {
       whileInView={{ opacity: 1, x: 0 }}
       style={{
         alignSelf: sameSender ? "flex-end" : "flex-start",
-        backgroundColor: "white",
-        borderRadius: "8px",
-        padding: "8px",
+
+        backgroundColor: sameSender 
+          ? "#2F80ED" 
+          : "#232533",
+
+        color:"#fff",
+
+        borderRadius: "14px",
+        padding: "10px 14px",
         maxWidth: "60%",
         width: "fit-content",
-        wordBreak: "break-word",
+
+        wordBreak:"break-word",
+
+        boxShadow:"0 4px 12px rgba(0,0,0,0.25)",
       }}
     >
+
       {!sameSender && (
-        <Typography color={lightBlue} fontWeight={"600"} variant="caption">
-          {sender.name}
+        <Typography
+          color="#5CA9FF"
+          fontWeight={600}
+          variant="caption"
+        >
+          {sender?.name}
         </Typography>
       )}
 
-      {content && <Typography>{content}</Typography>}
+      {content && (
+        <Typography
+          sx={{
+            color:"#fff",
+            mt:0.5
+          }}
+        >
+          {content}
+        </Typography>
+      )}
+
 
       {attachments.length > 0 &&
-        attachments.map((attachment, index) => {
+        attachments.map((attachment,index)=>{
+
           const url = attachment.url;
           const file = fileFormat(url);
 
@@ -50,18 +144,31 @@ function MessageComponent({ message, user }) {
                 target="_blank"
                 download
                 style={{
-                  color: "black",
+                  color:"#fff"
                 }}
               >
-                <RenderAttachments file={file} url={url} />
+                <RenderAttachments 
+                  file={file}
+                  url={url}
+                />
               </a>
             </Box>
           );
         })}
 
-      <Typography variant="caption" color={"text.secondary"}>
+
+      <Typography
+        variant="caption"
+        sx={{
+          display:"block",
+          textAlign:"right",
+          color:"rgba(255,255,255,0.6)",
+          mt:0.5
+        }}
+      >
         {timeAgo}
       </Typography>
+
     </motion.div>
   );
 }

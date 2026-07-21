@@ -83,59 +83,181 @@ toast.error(msg );
 
 
 
+return (
+  <Dialog
+    open={isSearch}
+    onClose={searchCloseHandler}
+    PaperProps={{
+      sx:{
+        bgcolor:"#232533",
+        color:"#fff",
+        borderRadius:"16px",
+        border:"1px solid rgba(255,255,255,0.08)",
+      }
+    }}
+  >
+
+    <Stack
+      p="2rem"
+      direction="column"
+      spacing="1.5rem"
+      sx={{
+        width:{
+          xs:"80vw",
+          sm:"25rem",
+        },
+        maxWidth:"25rem",
+      }}
+    >
+
+      <DialogTitle
+        textAlign="center"
+        sx={{
+          color:"#fff",
+          fontWeight:700,
+        }}
+      >
+        Find People
+      </DialogTitle>
 
 
-  return (
-    <Dialog open={isSearch} onClose={searchCloseHandler}>
-      <Stack p={"2rem"} direction={"column"}   sx={{
-    width: {
-      xs: "80vw",
-      sm: "25rem",
-    },
-    maxWidth: "25rem",
-  }}>
-        <DialogTitle textAlign={"center"}>Find People</DialogTitle>
-        <TextField
-          label=""
-          value={search.value}
-          onChange={search.changeHandler}
-          variant="outlined"
-          size="small"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            ),
-          }}
-        />
+      <TextField
+        value={search.value}
+        onChange={search.changeHandler}
+        variant="outlined"
+        size="small"
+        placeholder="Search user..."
+
+        InputProps={{
+          startAdornment:(
+            <InputAdornment position="start">
+              <SearchIcon
+                sx={{
+                  color:"rgba(255,255,255,0.6)"
+                }}
+              />
+            </InputAdornment>
+          )
+        }}
+
+        sx={{
+          "& .MuiOutlinedInput-root":{
+            color:"#fff",
+
+            "& fieldset":{
+              borderColor:"rgba(255,255,255,0.3)"
+            },
+
+            "&:hover fieldset":{
+              borderColor:"#2F80ED"
+            },
+
+            "&.Mui-focused fieldset":{
+              borderColor:"#5CA9FF"
+            }
+          },
+
+          "& input::placeholder":{
+            color:"rgba(255,255,255,0.5)"
+          }
+        }}
+      />
+
+
+      <List
+        sx={{
+          maxHeight:"350px",
+          overflowY:"auto",
+        }}
+      >
+
+        {users.length > 0 ? (
+          users.map((i)=>(
+            <UserItem
+              user={i}
+              key={i._id}
+              handler={addFriendHandler}
+              handlerIsLoading={loadingUserId===i._id}
+            />
+          ))
+        ) : (
+
+          search.value.trim() !== "" && (
+
+            <ListItem>
+              <ListItemText
+                primary="User not found"
+                sx={{
+                  textAlign:"center",
+
+                  "& .MuiListItemText-primary":{
+                    color:"rgba(255,255,255,0.6)"
+                  }
+                }}
+              />
+            </ListItem>
+
+          )
+        )}
+
+      </List>
+
+    </Stack>
+
+  </Dialog>
+);
+
+//   return (
+//     <Dialog open={isSearch} onClose={searchCloseHandler}>
+//       <Stack p={"2rem"} direction={"column"}   sx={{
+//     width: {
+//       xs: "80vw",
+//       sm: "25rem",
+//     },
+//     maxWidth: "25rem",
+//   }}>
+//         <DialogTitle textAlign={"center"}>Find People</DialogTitle>
+//         <TextField
+//           label=""
+//           value={search.value}
+//           onChange={search.changeHandler}
+//           variant="outlined"
+//           size="small"
+//           InputProps={{
+//             startAdornment: (
+//               <InputAdornment position="start">
+//                 <SearchIcon />
+//               </InputAdornment>
+//             ),
+//           }}
+//         />
       
 
-        <List>
-  {users.length > 0 ? (
-    users.map((i) => (
-      <UserItem
-        user={i}
-        key={i._id}
-        handler={addFriendHandler}
-        // handlerIsLoading={isLoading}
-     handlerIsLoading={loadingUserId === i._id}
-      />
-    ))
-  ) : (
-    search.value.trim() !== "" && (
-      <ListItem>
-        <ListItemText
-          primary="User not found"
-          sx={{ textAlign: "center", color: "gray" }}
-        />
-      </ListItem>
-    )
-  )}
-</List>
-      </Stack>
-    </Dialog>
-  );
+//         <List>
+//   {users.length > 0 ? (
+//     users.map((i) => (
+//       <UserItem
+//         user={i}
+//         key={i._id}
+//         handler={addFriendHandler}
+//         // handlerIsLoading={isLoading}
+//      handlerIsLoading={loadingUserId === i._id}
+//       />
+//     ))
+//   ) : (
+//     search.value.trim() !== "" && (
+//       <ListItem>
+//         <ListItemText
+//           primary="User not found"
+//           sx={{ textAlign: "center", color: "gray" }}
+//         />
+//       </ListItem>
+//     )
+//   )}
+// </List>
+//       </Stack>
+//     </Dialog>
+//   );
 }
 
 export default Search;

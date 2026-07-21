@@ -56,7 +56,10 @@ const Chat = ({ chatId, user }) => {
   const typingTimeout = useRef(null);
 
   const chatDetails = useChatDetailsQuery({ chatId, skip: !chatId });
-  const oldMessagesChunk = useGetMessagesQuery({ chatId, page }, { skip: !chatId });
+  const oldMessagesChunk = useGetMessagesQuery(
+    { chatId, page },
+    { skip: !chatId },
+  );
 
   const { data: oldMessages, setData: setOldMessages } = useInfiniteScrollTop(
     containerRef,
@@ -144,7 +147,6 @@ const Chat = ({ chatId, user }) => {
     [chatId],
   );
 
- 
   const startTypingListener = useCallback(
     (data) => {
       if (data.chatId !== chatId) return;
@@ -205,7 +207,7 @@ const Chat = ({ chatId, user }) => {
         boxSizing={"border-box"}
         padding={"1rem"}
         spacing={"1rem"}
-        bgcolor={grayColor}
+        bgcolor="#181A20"
         height={"90%"}
         sx={{
           overflowX: "hidden",
@@ -214,10 +216,14 @@ const Chat = ({ chatId, user }) => {
       >
         {group?.groupChat && (
           <>
-            <Typography textAlign="center" fontWeight="bold">
+            <Typography textAlign="center" fontWeight="bold" color="#fff">
               Group - {group?.name}
             </Typography>
-            <Typography textAlign="center" variant="caption">
+            <Typography
+              textAlign="center"
+              variant="caption"
+              color="rgba(255,255,255,0.6)"
+            >
               Created by {creatorData?.creator?.name || "Admin"}
             </Typography>
           </>
@@ -225,7 +231,8 @@ const Chat = ({ chatId, user }) => {
         {allMessages.length === 0 && (
           <Typography
             textAlign="center"
-            color="text.secondary"
+            // color="text.secondary"
+            color="rgba(255,255,255,0.5)"
             sx={{
               margin: "auto",
               fontSize: "1rem",
@@ -244,6 +251,7 @@ const Chat = ({ chatId, user }) => {
       <form
         style={{
           height: "10%",
+          background: "#121318",
         }}
         onSubmit={submitHandler}
       >
@@ -255,6 +263,7 @@ const Chat = ({ chatId, user }) => {
           position={"relative"}
         >
           <IconButton
+          sx={{color:"#fff"}}
             sx={{
               position: "absolute",
               left: "1.5rem",
@@ -273,17 +282,20 @@ const Chat = ({ chatId, user }) => {
             type="submit"
             sx={{
               rotate: "-30deg",
-              bgcolor: orange,
+            
+              bgcolor: "#2F80ED",
+
+              "&:hover": {
+                bgcolor: "#5CA9FF",
+              },
               color: "white",
               marginLeft: "1rem",
               padding: "0.5rem",
-              "&:hover": {
-                bgcolor: "error.dark",
-              },
+            
             }}
           >
             <SendIcon />
-          </IconButton>
+          </IconButton >
         </Stack>
       </form>
 

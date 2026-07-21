@@ -1,4 +1,3 @@
-
 import React, { memo } from "react";
 import {
   Button,
@@ -49,9 +48,31 @@ function Notifications() {
   useErrors([{ error, isError }]);
 
   return (
-    <Dialog open={isNotification} onClose={onCloseHandler}>
-      <Stack p={{ xs: "1rem", sm: "2rem" }} maxWidth={"25rem"}>
-        <DialogTitle>Notifications</DialogTitle>
+  
+    <Dialog
+      open={isNotification}
+      onClose={onCloseHandler}
+      PaperProps={{
+        sx: {
+          bgcolor: "#232533",
+          color: "#fff",
+          borderRadius: "16px",
+          border: "1px solid rgba(255,255,255,0.08)",
+        },
+      }}
+    >
+      {/* <Stack p={{ xs: "1rem", sm: "2rem" }} maxWidth={"25rem"}> */}
+      <Stack p={{ xs: "1rem", sm: "2rem" }} spacing="1rem" maxWidth="25rem">
+       
+        <DialogTitle
+          sx={{
+            color: "#fff",
+            fontWeight: 700,
+            textAlign: "center",
+          }}
+        >
+          Notifications
+        </DialogTitle>
 
         {isLoading ? (
           <Skeleton />
@@ -67,7 +88,15 @@ function Notifications() {
                 />
               ))
             ) : (
-              <Typography textAlign={"center"}>No notifications</Typography>
+            
+              <Typography
+                textAlign="center"
+                sx={{
+                  color: "rgba(255,255,255,0.6)",
+                }}
+              >
+                No notifications
+              </Typography>
             )}
           </>
         )}
@@ -79,12 +108,23 @@ function Notifications() {
 const NotificationItem = memo(({ sender, _id, handler }) => {
   const { name, avatar } = sender || {};
   return (
-    <ListItem>
+    // <ListItem>
+    <ListItem
+      sx={{
+        bgcolor: "#181A20",
+        borderRadius: "12px",
+        mb: 1,
+        border: "1px solid rgba(255,255,255,0.08)",
+      }}
+    >
       <Stack
         direction="row"
         alignItems="center"
         spacing="1rem"
         width="100%"
+        sx={{
+          color: "#fff",
+        }}
       >
         <Avatar src={avatar} />
         <Typography
@@ -96,6 +136,8 @@ const NotificationItem = memo(({ sender, _id, handler }) => {
             overflow: "hidden",
             width: "100%",
             textOverflow: "ellipsis",
+            color: "#fff",
+            fontWeight: 500,
           }}
         >{`${name || "Someone"} sent you a friend request`}</Typography>
         <Stack
@@ -104,8 +146,23 @@ const NotificationItem = memo(({ sender, _id, handler }) => {
             sm: "row",
           }}
         >
-          <Button onClick={() => handler({ _id, accept: true })}>Accept</Button>
-          <Button color="error" onClick={() => handler({ _id, accept: false })}>
+         
+          <Button
+            onClick={() => handler({ _id, accept: true })}
+            sx={{
+              color: "#5CA9FF",
+              fontWeight: 600,
+            }}
+          >
+            Accept
+          </Button>
+          <Button
+            color="error"
+            onClick={() => handler({ _id, accept: false })}
+            sx={{
+              fontWeight: 600,
+            }}
+          >
             Reject
           </Button>
         </Stack>
@@ -115,5 +172,3 @@ const NotificationItem = memo(({ sender, _id, handler }) => {
 });
 
 export default Notifications;
-
-

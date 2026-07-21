@@ -3,66 +3,94 @@ import React, { memo } from "react";
 import { Add as AddIcon, Remove as RemoveIcon } from "@mui/icons-material";
 import { transformImage } from "../../lib/featues";
 
-function UserItem({ user, handler, handlerIsLoading, isAdded, styling = {} }) {
+function UserItem({
+  user,
+  handler,
+  handlerIsLoading,
+  isAdded,
+  styling = {},
+}) {
   const { name, _id, avatar } = user;
+
   return (
     <ListItem>
       <Stack
-        direction={"row"}
-        alignItems={"center"}
-        spacing={"1rem"}
-        width={"100%"}
+        direction="row"
+        alignItems="center"
+        spacing="1rem"
+        width="100%"
         {...styling}
         sx={{
-          // p: 2,
           borderRadius: 3,
-          backgroundColor: "white",
-          border: "1px solid #eee",
-          boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
-          transition: "all 0.3s ease",
-          "&:hover": {
-            boxShadow: "0 8px 20px rgba(0,0,0,0.12)",
-            transform: "translateY(-4px)",
+          backgroundColor: "#181A20",
+          border: "1px solid rgba(255,255,255,0.08)",
+          padding:"0.8rem",
+
+          transition:"all 0.3s ease",
+
+          "&:hover":{
+            backgroundColor:"#232533",
+            transform:"translateY(-2px)",
           },
         }}
       >
-        {/* <Avatar src={transformImage(avatar)} /> */}
-        <Avatar src={transformImage(avatar?.url || avatar)} />
+
+        <Avatar
+          src={transformImage(avatar?.url || avatar)}
+          sx={{
+            width:"45px",
+            height:"45px",
+          }}
+        />
+
+
         <Typography
           sx={{
-            flexGrow: 1,
-            display: "-webkit-box",
-            // WebkitAlignContentebkitLineClamp:1,
-            WebkitLineClamp: 1,
-            WebkitBoxOrient: "vertical",
-            overflow: "hidden",
-            width: "100%",
-            textOverflow: "ellipsis",
+            flexGrow:1,
+            color:"#fff",
+
+            display:"-webkit-box",
+            WebkitLineClamp:1,
+            WebkitBoxOrient:"vertical",
+
+            overflow:"hidden",
+            textOverflow:"ellipsis",
+
+            fontWeight:500,
           }}
         >
           {name}
         </Typography>
+
+
         <IconButton
-          onClick={() => handler(user._id)}
+          onClick={() => handler(_id)}
           disabled={handlerIsLoading}
           size="small"
           sx={{
-            bgcolor: isAdded ? "error.main" : "primary.main",
-            color: "white",
-            "&:hover": {
-              bgcolor: isAdded ? "error.dark" : "primary.main",
+            bgcolor: isAdded 
+              ? "#E53935" 
+              : "#2F80ED",
+
+            color:"#fff",
+
+            "&:hover":{
+              bgcolor: isAdded 
+                ? "#C62828" 
+                : "#5CA9FF",
             },
           }}
-          onClick={() => handler(_id)}
-          disabled={handlerIsLoading}
         >
-          {isAdded ? <RemoveIcon /> : <AddIcon />}
+          {isAdded 
+            ? <RemoveIcon/>
+            : <AddIcon/>
+          }
+
         </IconButton>
+
       </Stack>
     </ListItem>
   );
 }
 
 export default memo(UserItem);
-
-

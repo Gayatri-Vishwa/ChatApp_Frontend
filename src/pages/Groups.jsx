@@ -1,4 +1,3 @@
-
 import {
   Add as AddIcon,
   Delete as DeleteIcon,
@@ -214,16 +213,49 @@ const Groups = () => {
   );
 
   const GroupName = (
+    // <Stack
+    //   direction={"row"}
+    //   alignItems={"center"}
+    //   justifyContent={"center"}
+    //   spacing={"1rem"}
+    //   padding={"3rem"}
+    // >
     <Stack
-      direction={"row"}
-      alignItems={"center"}
-      justifyContent={"center"}
-      spacing={"1rem"}
-      padding={"3rem"}
+      direction="row"
+      spacing="1rem"
+      alignItems="center"
+      sx={{
+        padding: "0.8rem 1rem",
+        borderRadius: "12px",
+        color: "white",
+        transition: "0.3s",
+        background: "rgba(47,128,237,0.25)",
+        //  chatId===_id
+        //  ? "rgba(47,128,237,0.25)"
+        //  : "transparent",
+
+        "&:hover": {
+          background: "rgba(255,255,255,0.08)",
+          transform: "translateX(5px)",
+        },
+      }}
     >
       {isEdit ? (
         <>
           <TextField
+            sx={{
+              "& .MuiInputBase-input": {
+                color: "white",
+              },
+
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "rgba(255,255,255,.3)",
+              },
+
+              "& label": {
+                color: "gray",
+              },
+            }}
             value={groupNameUpdatedValue}
             onChange={(e) => setGroupNameUpdatedValue(e.target.value)}
           />
@@ -233,7 +265,17 @@ const Groups = () => {
         </>
       ) : (
         <>
-          <Typography variant="h4">{groupName}</Typography>
+          {/* <Typography variant="h4">{groupName}</Typography> */}
+          <Typography
+            variant="h4"
+            sx={{
+              color: "white",
+              fontWeight: 700,
+              letterSpacing: "1px",
+            }}
+          >
+            {groupName}
+          </Typography>
           <IconButton
             disabled={isLoadingGroupName}
             onClick={() => setIsEdit(true)}
@@ -258,19 +300,33 @@ const Groups = () => {
         md: "1rem 4rem",
       }}
     >
-      <Button
+      {/* <Button
         size="large"
         color="error"
         startIcon={<DeleteIcon />}
         onClick={openConfirmDeleteHandler}
-      >
+      > */}
+      <Button
+sx={{
+ borderRadius:"10px",
+ fontWeight:600,
+}}
+color="error"
+variant="outlined">
+  
         Delete Group
       </Button>
-      <Button
-        size="large"
-        variant="contained"
-        startIcon={<AddIcon />}
-        onClick={openAddMemberHandler}
+    <Button
+variant="contained"
+sx={{
+ background:"#2F80ED",
+ borderRadius:"10px",
+ fontWeight:600,
+
+ "&:hover":{
+  background:"#5CA9FF"
+ }
+}}
       >
         Add Member
       </Button>
@@ -280,7 +336,15 @@ const Groups = () => {
   return myGroups.isLoading ? (
     <LayoutLoaders />
   ) : (
-    <Grid container height={"100vh"}>
+    // <Grid container height={"100vh"}>
+    <Grid
+      container
+      sx={{
+        height: "calc(100vh - 64px)",
+        background: "#161925",
+        overflow: "hidden",
+      }}
+    >
       <Grid
         item
         sx={{
@@ -330,9 +394,13 @@ const Groups = () => {
             {GroupName}
 
             <Typography
-              margin={"2rem"}
-              alignSelf={"flex-start"}
-              variant="body1"
+              sx={{
+                color: "rgba(255,255,255,0.7)",
+                fontWeight: 600,
+                fontSize: "1.1rem",
+                alignSelf: "flex-start",
+                margin: "1rem 0",
+              }}
             >
               Members
             </Typography>
@@ -349,6 +417,21 @@ const Groups = () => {
               spacing={"2rem"}
               height={"50vh"}
               overflow={"auto"}
+              sx={{
+                width: "100%",
+                maxWidth: "45rem",
+                height: "55vh",
+                overflowY: "auto",
+                padding: "1rem",
+
+                background: "#202333",
+                borderRadius: "16px",
+                border: "1px solid rgba(255,255,255,0.08)",
+
+                "&::-webkit-scrollbar": {
+                  width: "5px",
+                },
+              }}
             >
               {isLoadingRemoveMember ? (
                 <CircularProgress />
@@ -404,7 +487,7 @@ const Groups = () => {
           w={"50vw"}
           myGroups={myGroups?.data?.groups}
           chatId={chatId}
-            creatorMap={groupDetails?.data}
+          creatorMap={groupDetails?.data}
         />
       </Drawer>
     </Grid>
@@ -412,7 +495,7 @@ const Groups = () => {
 };
 
 const GroupsList = ({ w = "100%", myGroups = [], chatId, creatorMap }) => (
-// const GroupsList = ({ w = "100%", myGroups = [], chatId }) => (
+  // const GroupsList = ({ w = "100%", myGroups = [], chatId }) => (
   <Stack
     width={w}
     sx={{
@@ -423,7 +506,12 @@ const GroupsList = ({ w = "100%", myGroups = [], chatId, creatorMap }) => (
   >
     {myGroups.length > 0 ? (
       myGroups.map((group) => (
-        <GroupListItem group={group} chatId={chatId} key={group._id}  creatorName={creatorMap?.chat?.creator?.name}/>
+        <GroupListItem
+          group={group}
+          chatId={chatId}
+          key={group._id}
+          creatorName={creatorMap?.chat?.creator?.name}
+        />
       ))
     ) : (
       <Typography textAlign={"center"} padding="1rem">
@@ -434,7 +522,7 @@ const GroupsList = ({ w = "100%", myGroups = [], chatId, creatorMap }) => (
   </Stack>
 );
 
-const GroupListItem = memo(({ group, chatId,creatorName }) => {
+const GroupListItem = memo(({ group, chatId, creatorName }) => {
   const { name, avatar, _id } = group;
 
   return (
@@ -447,15 +535,9 @@ const GroupListItem = memo(({ group, chatId,creatorName }) => {
       <Stack direction={"row"} spacing={"1rem"} alignItems={"center"}>
         <AvatarCard avatar={avatar} />
         <Typography>{name}</Typography>
-    
       </Stack>
     </Link>
   );
 });
 
-
-
-
-
 export default Groups;
-

@@ -1,5 +1,3 @@
-
-
 import {
   Button,
   Dialog,
@@ -26,7 +24,7 @@ const AddMemberDialog = ({ chatId }) => {
   const { isLoading, data, isError, error } = useAvailableFriendsQuery(chatId);
 
   const [addMembers, isLoadingAddMembers] = useAsyncMutation(
-    useAddGroupMembersMutation
+    useAddGroupMembersMutation,
   );
 
   const [selectedMembers, setSelectedMembers] = useState([]);
@@ -35,7 +33,7 @@ const AddMemberDialog = ({ chatId }) => {
     setSelectedMembers((prev) =>
       prev.includes(id)
         ? prev.filter((currElement) => currElement !== id)
-        : [...prev, id]
+        : [...prev, id],
     );
   };
 
@@ -49,11 +47,31 @@ const AddMemberDialog = ({ chatId }) => {
 
   useErrors([{ isError, error }]);
   return (
-    <Dialog open={isAddMember} onClose={closeHandler}>
+    <Dialog
+      open={isAddMember}
+      onClose={closeHandler}
+      PaperProps={{
+        sx: {
+          bgcolor: "#232533",
+          color: "#fff",
+          borderRadius: "16px",
+          border: "1px solid rgba(255,255,255,0.08)",
+        },
+      }}
+    >
       <Stack p={"2rem"} width={"20rem"} spacing={"2rem"}>
-        <DialogTitle textAlign={"center"}>Add Member</DialogTitle>
+        {/* <DialogTitle textAlign={"center"}>Add Member</DialogTitle> */}
+        <DialogTitle
+          textAlign="center"
+          sx={{
+            color: "#fff",
+            fontWeight: 700,
+          }}
+        >
+          Add Member
+        </DialogTitle>
 
-        <Stack spacing={"1rem"}>
+        <Stack >
           {isLoading ? (
             <Skeleton />
           ) : data?.friends?.length > 0 ? (
@@ -66,7 +84,9 @@ const AddMemberDialog = ({ chatId }) => {
               />
             ))
           ) : (
-            <Typography textAlign={"center"}>No Friends</Typography>
+            <Typography textAlign={"center"} color="rgba(255,255,255,0.6)">
+              No Friends
+            </Typography>
           )}
         </Stack>
 
@@ -75,13 +95,28 @@ const AddMemberDialog = ({ chatId }) => {
           alignItems={"center"}
           justifyContent={"space-evenly"}
         >
-          <Button color="error" onClick={closeHandler}>
+          <Button
+            color="error"
+            onClick={closeHandler}
+            sx={{
+              fontWeight: 600,
+            }}
+          >
             Cancel
           </Button>
           <Button
-            onClick={addMemberSubmitHandler}
             variant="contained"
+            onClick={addMemberSubmitHandler}
             disabled={isLoadingAddMembers}
+            sx={{
+              bgcolor: "#2F80ED",
+              borderRadius: "10px",
+              fontWeight: 600,
+
+              "&:hover": {
+                bgcolor: "#5CA9FF",
+              },
+            }}
           >
             Submit Changes
           </Button>

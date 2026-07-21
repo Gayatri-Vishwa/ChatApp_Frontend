@@ -68,78 +68,154 @@ const { isNewGroup } = useSelector((state) => state.misc);
   };
 
 
-
-  return (
-    <Dialog
-      open
-      onClose={closeHandler}
-      fullWidth
-      maxWidth="xs" // responsive width
-    >
-      <Stack
-        p={{ xs: "1rem", sm: "2rem" }}
-        spacing={"1.5rem"}
+return (
+  <Dialog
+    open={isNewGroup}
+    onClose={closeHandler}
+    fullWidth
+    maxWidth="xs"
+      scroll="paper"
+    PaperProps={{
+      sx:{
+        bgcolor:"#232533",
+        color:"#fff",
+        borderRadius:"16px",
+        border:"1px solid rgba(255,255,255,0.08)",
+      }
+    }}
+  >
+    <Stack
+      p={{ xs:"1rem", sm:"2rem" }}
+      spacing="1.5rem"
         sx={{
-          width: "100%",
-          maxHeight: "80vh", // prevent full screen scroll
+    maxHeight:"90vh",
+    overflow:"hidden",
+  }}
+
+    >
+
+      <DialogTitle
+        textAlign="center"
+        variant="h4"
+        sx={{
+          color:"#fff",
+          fontWeight:700,
         }}
       >
-        <DialogTitle textAlign={"center"} variant="h4">
-          New Group
-        </DialogTitle>
-        <TextField
-          label="GroupName"
-          value={groupName.value}
-          onChange={groupName.changeHandler}
-        />
-        <Typography variant="body1">Members</Typography>
+        New Group
+      </DialogTitle>
 
-        <Stack
-          sx={{
-            maxHeight: {
-              xs: "250px", // mobile
-              sm: "300px", // tablet
-              md: "350px", // desktop
+
+      <TextField
+        label="Group Name"
+        value={groupName.value}
+        onChange={groupName.changeHandler}
+        sx={{
+          "& .MuiOutlinedInput-root":{
+            color:"#fff",
+
+            "& fieldset":{
+              borderColor:"rgba(255,255,255,0.3)"
             },
-            overflowY: "auto",
-            border: "1px solid #e0e0e0",
-            borderRadius: "10px",
-            padding: "0.5rem",
+
+            "&:hover fieldset":{
+              borderColor:"#2F80ED"
+            },
+
+            "&.Mui-focused fieldset":{
+              borderColor:"#5CA9FF"
+            }
+          },
+
+          "& .MuiInputLabel-root":{
+            color:"rgba(255,255,255,0.6)"
+          }
+        }}
+      />
+
+
+      <Typography
+        sx={{
+          color:"#fff",
+          fontWeight:600
+        }}
+      >
+        Members
+      </Typography>
+
+
+      <Stack
+        sx={{
+          maxHeight:{
+            xs:"250px",
+            sm:"300px",
+            md:"350px",
+          },
+
+          overflowY:"auto",
+
+          bgcolor:"#181A20",
+
+          border:"1px solid rgba(255,255,255,0.08)",
+
+          borderRadius:"10px",
+
+          padding:"0.5rem",
+        }}
+      >
+
+        {data?.friends?.map((i)=>(
+          <UserItem
+            user={i}
+            key={i._id}
+            handler={selectMemberHandler}
+            isAdded={selectedMembers.includes(i._id)}
+          />
+        ))}
+
+      </Stack>
+
+
+      <Stack
+        direction="row"
+        justifyContent="space-evenly"
+      >
+
+        <Button
+          variant="text"
+          color="error"
+          size="large"
+          onClick={closeHandler}
+        >
+          Cancel
+        </Button>
+
+
+        <Button
+          variant="contained"
+          size="large"
+          onClick={submitHandler}
+          disabled={isLoadingNewGroup}
+          sx={{
+            bgcolor:"#2F80ED",
+            borderRadius:"10px",
+            fontWeight:600,
+
+            "&:hover":{
+              bgcolor:"#5CA9FF"
+            }
           }}
         >
-          {data?.friends?.map((i) => (
-            <UserItem
-              user={i}
-              key={i._id}
-              handler={selectMemberHandler}
-              // isAdded={members.includes(i._id)}
-              isAdded={selectedMembers.includes(i._id)}
+          Create
+        </Button>
 
-              // handlerIsLoading={isLoadingSendFriendRequest}
-            />
-          ))}
-        </Stack>
 
-        <Stack direction={"row"} justifyContent={"space-evenly"}>
-          <Button
-            variant="text"
-            color="error"
-            size="large"
-            onClick={closeHandler}
-          >
-            Cancel
-          </Button>
-          <Button
-            variant="contained"
-            size="large"
-            onClick={submitHandler}
-            disabled={isLoadingNewGroup}
-          >
-            Create
-          </Button>
-        </Stack>
       </Stack>
-    </Dialog>
-  );
+
+    </Stack>
+
+  </Dialog>
+);
+
 }
 export default NewGroup;

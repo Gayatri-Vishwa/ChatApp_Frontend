@@ -139,7 +139,7 @@ const AppLayout = () => (WrappedComponent) => {
         socket.emit(REQUEST_UNREAD_ALERTS);
         console.log("Requested unread alerts from server");
       } catch (err) {
-        console.warn("Failed to request unread alerts", err);
+        console.log("Failed to request unread alerts", err);
       }
     }, [socket]);
 
@@ -188,11 +188,11 @@ const AppLayout = () => (WrappedComponent) => {
             height="100%"
             sx={{
               width: "320px",
-              // flexShrink: 0,
+            
               display: { xs: "none", sm: "block" },
             }}
           >
-            {/* <Grid item sm={4} md={4}   height="100%" sx={{   display: { xs: "none", sm: "block" }}}> */}
+          
             {isLoading ? (
               <Skeleton />
             ) : (
@@ -206,7 +206,7 @@ const AppLayout = () => (WrappedComponent) => {
             )}
           </Grid>
 
-          {/* <Grid item xs={12} sm={8} md={6} lg={6} height="100%"> */}
+      
           <Grid
             item
             xs={12}
@@ -230,14 +230,7 @@ const AppLayout = () => (WrappedComponent) => {
               flexShrink: 0,
             }}
           >
-            {/* <Grid
-            item
-            xs={12}
-            md={3}
-            lg={3}
-            height="100%"
          
-          > */}
             <Profile user={user} />
           </Grid>
         </Grid>
