@@ -22,6 +22,7 @@ import { useAsyncMutation } from "../../Hooks/hook.jsx";
 
 function Search() {
   const { isSearch } = useSelector((state) => state.misc);
+  const [sentRequestIds, setSentRequestIds] = useState([]);
   const [searchUser] = useLazySearchUserQuery();
   // const [sendFriendRequest,isLoadingSendFriendRequest] = useAsyncMutation(useSendFriendRequestMutation);
   const [sendFriendRequest, { isLoading }, isLoadingSendFriendRequest] = useSendFriendRequestMutation();
@@ -61,17 +62,15 @@ function Search() {
     try {
       setLoadingUserId(id);
 
-      const res = await sendFriendRequest({ userId: id }).unwrap();
+      const result = await sendFriendRequest({ userId: id });
 
-      setUsers((previousUsers) =>
-        previousUsers.map((user) =>
-          user._id === id
-            ? { ...user, isRequestSent: true }
-            : user
-        )
-      );
+      if (result.error) {
+        throw result.error;
+      }
 
-      toast.success(res.message || "Request sent successfully");
+      setSentRequestIds((previous) => [...previous, id]);
+
+      toast.success(result.data?.message || "Request sent successfully");
     } catch (err) {
       toast.error(err?.data?.message || "Request already sent");
     } finally {
@@ -202,11 +201,16 @@ function Search() {
                 isAdded={
                   i.isFriend ||
                   i.isRequestSent ||
-                  i.isRequestReceived
+                  i.isRequestReceived ||
+                  sentRequestIds.includes(i._id)
                 }
                 handler={addFriendHandler}
                 handlerIsLoading={loadingUserId === i._id}
               />
+
+
+
+              
               // <UserItem
 
               //   user={i}
