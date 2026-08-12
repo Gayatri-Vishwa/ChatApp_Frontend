@@ -12,7 +12,7 @@ switch (file) {
 
   case "audio":
   case "mp3":
-    return <audio src={url} preload="none" controls   />;
+    return <audio src={url} preload="none" controls   style={{ width: "400px", maxWidth: "100%" }}/>;
 
   case "image":
   case "jpg":
