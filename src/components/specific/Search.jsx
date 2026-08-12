@@ -22,7 +22,7 @@ import { useAsyncMutation } from "../../Hooks/hook.jsx";
 
 function Search() {
   const { isSearch } = useSelector((state) => state.misc);
-  const [sentRequestIds, setSentRequestIds] = useState([]);
+ 
   const [searchUser] = useLazySearchUserQuery();
   // const [sendFriendRequest,isLoadingSendFriendRequest] = useAsyncMutation(useSendFriendRequestMutation);
   const [sendFriendRequest, { isLoading }, isLoadingSendFriendRequest] = useSendFriendRequestMutation();
@@ -36,47 +36,29 @@ function Search() {
 
 
 
-  //original
-  // const addFriendHandler = async (id) => {
-  //   try {
-  //     setLoadingUserId(id);
-  //     const res = await sendFriendRequest({ userId: id })
-  //     // toast.success(res.message || "Request sent successfully");
-  //     toast.success(res.data.message);
-  //   } catch (err) {
-  //     // toast.error(err?.data?.message || "Something went wrong");
-  //     const msg =
-  //       typeof err?.data?.message === "string"
-  //         ? err.data.message
-  //         : err?.data?.message?.message ||
-  //         "Request Already sent";
-
-  //     toast.error(msg);
-  //   } finally {
-  //     setLoadingUserId(null);
-  //   }
-  // };
-
 
   const addFriendHandler = async (id) => {
     try {
       setLoadingUserId(id);
-
-      const result = await sendFriendRequest({ userId: id });
-
-      if (result.error) {
-        throw result.error;
-      }
-
-      setSentRequestIds((previous) => [...previous, id]);
-
-      toast.success(result.data?.message || "Request sent successfully");
+      const res = await sendFriendRequest({ userId: id })
+      // toast.success(res.message || "Request sent successfully");
+      toast.success(res.data.message);
     } catch (err) {
-      toast.error(err?.data?.message || "Request already sent");
+      // toast.error(err?.data?.message || "Something went wrong");
+      const msg =
+        typeof err?.data?.message === "string"
+          ? err.data.message
+          : err?.data?.message?.message ||
+          "Request Already sent";
+
+      toast.error(msg);
     } finally {
       setLoadingUserId(null);
     }
   };
+
+
+
 
   const searchCloseHandler = () => {
     dispatch(setIsSearch(false));
@@ -195,29 +177,14 @@ function Search() {
 
           {users.length > 0 ? (
             users.map((i) => (
+
               <UserItem
+
                 user={i}
                 key={i._id}
-                isAdded={
-                  i.isFriend ||
-                  i.isRequestSent ||
-                  i.isRequestReceived ||
-                  sentRequestIds.includes(i._id)
-                }
                 handler={addFriendHandler}
-                handlerIsLoading={loadingUserId === i._id}
+                handlerIsLoading={loadingUserId===i._id}
               />
-
-
-
-              
-              // <UserItem
-
-              //   user={i}
-              //   key={i._id}
-              //   handler={addFriendHandler}
-              //   handlerIsLoading={loadingUserId===i._id}
-              // />
             ))
           ) : (
 
